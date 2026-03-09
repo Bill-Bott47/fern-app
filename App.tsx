@@ -79,7 +79,7 @@ function HomeScreen({ onStart, onConnect, onHistory, onBiometrics, onTips, vitru
 
   return (
     <SafeAreaView style={s.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#080A0F" />
+      <StatusBar barStyle="light-content" backgroundColor={BG} />
       <ScrollView contentContainerStyle={s.scroll}>
         <Text style={s.wordmark}>FERN</Text>
         <Text style={s.date}>{new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'})}</Text>
@@ -250,7 +250,7 @@ function WorkoutScreen({ workout, onBack, vitruvian }: { workout: Workout; onBac
 
   return (
     <SafeAreaView style={s.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#080A0F" />
+      <StatusBar barStyle="light-content" backgroundColor={BG} />
       <View style={s.wkTopBar}>
         <TouchableOpacity onPress={onBack}><Text style={s.backBtn}>‹ Back</Text></TouchableOpacity>
         <View style={s.wkCounter}>
@@ -417,10 +417,11 @@ function WorkoutScreen({ workout, onBack, vitruvian }: { workout: Workout; onBac
   );
 }
 
-const G = '#3DDC84';
-const BG = '#080C12';
-const CARD = '#0F1520';
-const BORDER = '#1C2535';
+// Design System - Luxury Fitness Theme
+const G = '#C9A84C';         // Gold - Primary accent
+const BG = '#0A0A0A';        // Deep black - Background
+const CARD = '#141414';       // Card background - Surface
+const BORDER = '#2A2A2A';    // Subtle borders
 
 const s = StyleSheet.create({
   // ─── Layout ─────────────────────────────────────────────────────

@@ -5,15 +5,21 @@ import {
 } from 'react-native';
 import { getWorkouts, WorkoutSession } from '../services/fernApi';
 
-// ─── Design Tokens ──────────────────────────────────────────────
-const GOLD   = '#C9A84C';
-const BG     = '#0A0A0A';
-const SURFACE = '#141414';
-const SURFACE_ELEVATED = '#1E1E1E';
-const TEXT   = '#FFFFFF';
-const TEXT2  = '#8A8A8A';
-const BORDER = '#2A2A2A';
-const ERROR  = '#EF4444';
+// Design System - Luxury Fitness Theme
+const COLORS = {
+  primary: '#C9A84C',       // Gold
+  background: '#0A0A0A',     // Deep black
+  surface: '#141414',        // Card background
+  surfaceElevated: '#1E1E1E', // Elevated surfaces
+  textPrimary: '#FFFFFF',
+  textSecondary: '#8A8A8A',
+  border: '#2A2A2A',
+  success: '#4ADE80',
+  warning: '#FBBF24',
+  error: '#EF4444',
+};
+
+const RADIUS = { card: 12, button: 8 };
 
 interface Props {
   onBack: () => void;
@@ -43,9 +49,9 @@ function daysAgo(dateStr: string): string {
 
 export default function WorkoutHistoryScreen({ onBack }: Props) {
   const [workouts, setWorkouts] = useState<WorkoutSession[]>([]);
-  const [loading, setLoading]   = useState(true);
+  const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [error, setError]       = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchData = useCallback(async (isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
@@ -68,93 +74,93 @@ export default function WorkoutHistoryScreen({ onBack }: Props) {
   useEffect(() => { fetchData(); }, [fetchData]);
 
   return (
-    <SafeAreaView style={s.container}>
-      <StatusBar barStyle="light-content" backgroundColor={BG} />
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="light-content" backgroundColor={COLORS.background} />
 
       {/* Top bar */}
-      <View style={s.topBar}>
-        <TouchableOpacity onPress={onBack} style={s.backBtn}>
-          <Text style={s.backText}>‹ Back</Text>
+      <View style={styles.topBar}>
+        <TouchableOpacity onPress={onBack} style={styles.backBtn}>
+          <Text style={styles.backText}>‹ Back</Text>
         </TouchableOpacity>
-        <Text style={s.title}>WORKOUT HISTORY</Text>
+        <Text style={styles.title}>WORKOUT HISTORY</Text>
         <View style={{ width: 60 }} />
       </View>
 
       {loading ? (
-        <View style={s.center}>
-          <ActivityIndicator size="large" color={GOLD} />
-          <Text style={s.loadingText}>Loading workouts…</Text>
+        <View style={styles.center}>
+          <ActivityIndicator size="large" color={COLORS.primary} />
+          <Text style={styles.loadingText}>Loading workouts…</Text>
         </View>
       ) : error ? (
-        <View style={s.center}>
-          <Text style={s.errorIcon}>⚠️</Text>
-          <Text style={s.errorText}>{error}</Text>
-          <TouchableOpacity style={s.retryBtn} onPress={() => fetchData()}>
-            <Text style={s.retryText}>Retry</Text>
+        <View style={styles.center}>
+          <Text style={styles.errorIcon}>⚠️ <Text style={styles.errorText}>{</Text>
+         error}</Text>
+          <TouchableOpacity style={styles.retryBtn} onPress={() => fetchData()}>
+            <Text style={styles.retryText}>Retry</Text>
           </TouchableOpacity>
         </View>
       ) : (
         <ScrollView
-          contentContainerStyle={s.scroll}
+          contentContainerStyle={styles.scroll}
           refreshControl={
             <RefreshControl
               refreshing={refreshing}
               onRefresh={() => fetchData(true)}
-              tintColor={GOLD}
+              tintColor={COLORS.primary}
             />
           }
         >
           {workouts.length === 0 ? (
-            <View style={s.emptyState}>
-              <Text style={s.emptyEmoji}>🌿</Text>
-              <Text style={s.emptyTitle}>No Workouts Yet</Text>
-              <Text style={s.emptySub}>Complete your first workout to see it here.</Text>
+            <View style={styles.emptyState}>
+              <Text style={styles.emptyEmoji}>🌿</Text>
+              <Text style={styles.emptyTitle}>No Workouts Yet</Text>
+              <Text style={styles.emptySub}>Complete your first workout to see it here.</Text>
             </View>
           ) : (
             <>
-              <Text style={s.sectionLabel}>
-                {workouts.length} SESSION{workouts.length !== 1 ? 'S' : ''}
-              </Text>
+              <Text style={styles.sectionLabel}>{workouts.length} SESSION{workouts.length !== 1 ? 'S' : ''}</Text>
               {workouts.map((w, i) => (
-                <View key={w.id ?? i} style={s.card}>
-                  <View style={s.cardHeader}>
-                    <View style={s.cardMeta}>
-                      <Text style={s.cardAgo}>{daysAgo(w.date)}</Text>
-                      <Text style={s.cardDate}>{formatDate(w.date)}</Text>
+                <View key={w.id ?? i} style={styles.card}>
+                  <View style={styles.cardHeader}>
+                    <View style={styles.cardMeta}>
+                      <Text style={styles.cardAgo}>{daysAgo(w.date)}</Text>
+                      <Text style={styles.cardDate}>{formatDate(w.date)}</Text>
                     </View>
                     {w.duration_min != null && (
-                      <View style={s.durationPill}>
-                        <Text style={s.durationText}>{w.duration_min} min</Text>
+                      <View style={styles.durationPill}>
+                        <Text style={styles.durationText}>{w.duration_min} min</Text>
                       </View>
                     )}
                   </View>
 
-                  <Text style={s.cardName}>{w.name}</Text>
-                  {w.focus && <Text style={s.cardFocus}>{w.focus}</Text>}
+                  <Text style={styles.cardName}>{w.name}</Text>
+                  {w.focus && <Text style={styles.cardFocus}>{w.focus}</Text>}
 
-                  <View style={s.stats}>
+                  <View style={styles.stats}>
                     {w.total_sets != null && (
-                      <View style={s.stat}>
-                        <Text style={s.statVal}>{w.total_sets}</Text>
-                        <Text style={s.statLabel}>SETS</Text>
+                      <View style={styles.stat}>
+                        <Text style={styles.statVal}>{w.total_sets}</Text>
+                        <Text style={styles.statLabel}>SETS</Text>
                       </View>
                     )}
                     {w.sets_logged && (
-                      <View style={s.stat}>
-                        <Text style={s.statVal}>{w.sets_logged.length}</Text>
-                        <Text style={s.statLabel}>EXERCISES</Text>
+                      <View style={styles.stat}>
+                        <Text style={styles.statVal}>{w.sets_logged.length}</Text>
+                        <Text style={styles.statLabel}>EXERCISES</Text>
                       </View>
                     )}
                   </View>
 
-                  {w.notes && <Text style={s.notes}>{w.notes}</Text>}
+                  {w.notes && (
+                    <Text style={styles.notes}>{w.notes}</Text>
+                  )}
 
                   {w.sets_logged && w.sets_logged.length > 0 && (
-                    <View style={s.setsList}>
+                    <View style={styles.setsList}>
                       {w.sets_logged.slice(0, 4).map((set, si) => (
-                        <View key={si} style={s.setRow}>
-                          <Text style={s.setName}>{set.exercise}</Text>
-                          <Text style={s.setSpec}>
+                        <View key={si} style={styles.setRow}>
+                          <Text style={styles.setName}>{set.exercise}</Text>
+                          <Text style={styles.setSpec}>
                             {[
                               set.sets != null ? `${set.sets}×${set.reps}` : null,
                               set.weight_lbs != null ? `${set.weight_lbs} lbs` : null,
@@ -163,9 +169,7 @@ export default function WorkoutHistoryScreen({ onBack }: Props) {
                         </View>
                       ))}
                       {w.sets_logged.length > 4 && (
-                        <Text style={s.moreText}>
-                          +{w.sets_logged.length - 4} more exercises
-                        </Text>
+                        <Text style={styles.moreText}>+{w.sets_logged.length - 4} more exercises</Text>
                       )}
                     </View>
                   )}
@@ -180,83 +184,57 @@ export default function WorkoutHistoryScreen({ onBack }: Props) {
   );
 }
 
-const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: BG },
+const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: COLORS.background },
   topBar: {
     flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
     paddingHorizontal: 16, paddingTop: 16, paddingBottom: 12,
-    borderBottomWidth: 1, borderBottomColor: BORDER,
+    borderBottomWidth: 1, borderBottomColor: COLORS.border,
   },
   backBtn: { width: 60 },
-  backText: { fontSize: 15, color: GOLD, fontWeight: '600' },
-  title: {
-    fontSize: 11, letterSpacing: 4, color: TEXT2,
-    fontWeight: '700', fontFamily: 'Inter',
-  },
+  backText: { fontSize: 16, color: COLORS.primary, fontWeight: '600' },
+  title: { fontSize: 12, letterSpacing: 3, color: COLORS.textSecondary, fontWeight: '700' },
   scroll: { padding: 16 },
   center: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 40 },
-  loadingText: { color: TEXT2, fontSize: 13, marginTop: 12 },
+  loadingText: { color: COLORS.textSecondary, fontSize: 14, marginTop: 12 },
   errorIcon: { fontSize: 32, marginBottom: 12 },
-  errorText: { color: ERROR, fontSize: 14, textAlign: 'center', marginBottom: 20 },
+  errorText: { color: COLORS.error, fontSize: 14, textAlign: 'center', marginBottom: 20 },
   retryBtn: {
-    backgroundColor: SURFACE_ELEVATED, borderRadius: 8,
-    paddingHorizontal: 24, paddingVertical: 12,
-    borderWidth: 1, borderColor: BORDER,
+    backgroundColor: COLORS.surfaceElevated, borderRadius: RADIUS.button, paddingHorizontal: 24, paddingVertical: 12,
+    borderWidth: 1, borderColor: COLORS.border,
   },
-  retryText: { color: GOLD, fontWeight: '700', fontSize: 14 },
-
+  retryText: { color: COLORS.primary, fontWeight: '700', fontSize: 14 },
   emptyState: { alignItems: 'center', paddingVertical: 60 },
   emptyEmoji: { fontSize: 48, marginBottom: 16 },
-  emptyTitle: { fontSize: 20, color: TEXT, fontWeight: '700', marginBottom: 8 },
-  emptySub: { fontSize: 14, color: TEXT2, textAlign: 'center', lineHeight: 22 },
-
+  emptyTitle: { fontSize: 20, color: COLORS.textPrimary, fontWeight: '600', marginBottom: 8 },
+  emptySub: { fontSize: 14, color: COLORS.textSecondary, textAlign: 'center' },
   sectionLabel: {
-    fontSize: 10, letterSpacing: 4, color: TEXT2,
-    fontWeight: '700', marginBottom: 16,
+    fontSize: 11, letterSpacing: 2, color: COLORS.textSecondary,
+    fontWeight: '600', marginBottom: 16,
   },
-
-  // ─── Card ──────────────────────────────────────────────────────
   card: {
-    backgroundColor: SURFACE, borderRadius: 12, borderWidth: 1,
-    borderColor: BORDER, padding: 16, marginBottom: 10,
+    backgroundColor: COLORS.surface, borderRadius: RADIUS.card, borderWidth: 1,
+    borderColor: COLORS.border, padding: 16, marginBottom: 12,
   },
-  cardHeader: {
-    flexDirection: 'row', justifyContent: 'space-between',
-    alignItems: 'flex-start', marginBottom: 10,
-  },
+  cardHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10 },
   cardMeta: { gap: 2 },
-  cardAgo: { fontSize: 11, color: GOLD, fontWeight: '700', letterSpacing: 1 },
-  cardDate: { fontSize: 12, color: TEXT2 },
+  cardAgo: { fontSize: 12, color: COLORS.primary, fontWeight: '700', letterSpacing: 0.5 },
+  cardDate: { fontSize: 12, color: COLORS.textSecondary },
   durationPill: {
-    backgroundColor: `${GOLD}18`, borderRadius: 20, borderWidth: 1,
-    borderColor: `${GOLD}40`, paddingHorizontal: 10, paddingVertical: 4,
+    backgroundColor: 'rgba(201,168,76,0.15)', borderRadius: 20, borderWidth: 1,
+    borderColor: 'rgba(201,168,76,0.3)', paddingHorizontal: 10, paddingVertical: 4,
   },
-  durationText: { fontSize: 11, color: GOLD, fontWeight: '700' },
-
-  cardName: {
-    fontSize: 20, color: TEXT, fontWeight: '800',
-    letterSpacing: -0.5, marginBottom: 4,
-  },
-  cardFocus: { fontSize: 12, color: TEXT2, marginBottom: 14 },
-
+  durationText: { fontSize: 11, color: COLORS.primary, fontWeight: '700' },
+  cardName: { fontSize: 20, color: COLORS.textPrimary, fontWeight: '700', letterSpacing: -0.5, marginBottom: 4 },
+  cardFocus: { fontSize: 13, color: COLORS.textSecondary, marginBottom: 14 },
   stats: { flexDirection: 'row', gap: 24, marginBottom: 14 },
   stat: { alignItems: 'center' },
-  statVal: { fontSize: 22, color: TEXT, fontWeight: '800' },
-  statLabel: {
-    fontSize: 9, color: TEXT2, letterSpacing: 2,
-    fontWeight: '700', marginTop: 2,
-  },
-  notes: {
-    fontSize: 12, color: TEXT2, fontStyle: 'italic', marginBottom: 12,
-  },
-
-  setsList: {
-    borderTopWidth: 1, borderTopColor: BORDER, paddingTop: 12, gap: 8,
-  },
-  setRow: {
-    flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
-  },
-  setName: { fontSize: 13, color: TEXT2, flex: 1 },
-  setSpec: { fontSize: 12, color: '#666' },
-  moreText: { fontSize: 11, color: '#555', fontStyle: 'italic', marginTop: 4 },
+  statVal: { fontSize: 24, color: COLORS.textPrimary, fontWeight: '800' },
+  statLabel: { fontSize: 10, color: COLORS.textSecondary, letterSpacing: 1.5, fontWeight: '600', marginTop: 2 },
+  notes: { fontSize: 13, color: COLORS.textSecondary, fontStyle: 'italic', marginBottom: 12 },
+  setsList: { borderTopWidth: 1, borderTopColor: COLORS.border, paddingTop: 12, gap: 8 },
+  setRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  setName: { fontSize: 13, color: COLORS.textSecondary, flex: 1 },
+  setSpec: { fontSize: 12, color: COLORS.textSecondary },
+  moreText: { fontSize: 11, color: COLORS.textSecondary, fontStyle: 'italic', marginTop: 4 },
 });

@@ -5,19 +5,29 @@ import {
 } from 'react-native';
 import { getBiometrics, getCompliance, BiometricData, ComplianceData } from '../services/fernApi';
 
-const G = '#3DDC84';
-const BG = '#080C12';
-const CARD = '#0F1520';
-const BORDER = '#1C2535';
+// Design System - Luxury Fitness Theme
+const COLORS = {
+  primary: '#C9A84C',       // Gold
+  background: '#0A0A0A',    // Deep black
+  surface: '#141414',        // Card background
+  surfaceElevated: '#1E1E1E', // Elevated surfaces
+  textPrimary: '#FFFFFF',
+  textSecondary: '#8A8A8A',
+  border: '#2A2A2A',
+  success: '#4ADE80',
+  warning: '#FBBF24',
+  error: '#EF4444',
+};
+
+const RADIUS = { card: 12, button: 8 };
 
 interface Props {
   onBack: () => void;
 }
 
 function ComplianceRing({ score }: { score: number }) {
-  // Simple text-based ring substitute (no SVG needed)
   const pct = Math.min(100, Math.max(0, score));
-  const color = pct >= 80 ? G : pct >= 60 ? '#F59E0B' : '#EF4444';
+  const color = pct >= 80 ? COLORS.primary : pct >= 60 ? COLORS.warning : COLORS.error;
   return (
     <View style={ring.wrap}>
       <View style={[ring.circle, { borderColor: color }]}>
@@ -33,10 +43,10 @@ const ring = StyleSheet.create({
   circle: {
     width: 148, height: 148, borderRadius: 74,
     borderWidth: 6, alignItems: 'center', justifyContent: 'center',
-    backgroundColor: '#080C12',
+    backgroundColor: COLORS.background,
   },
   score: { fontSize: 52, fontWeight: '900', letterSpacing: -2, lineHeight: 56 },
-  label: { fontSize: 9, color: '#4D6478', letterSpacing: 3, fontWeight: '700', marginTop: 2 },
+  label: { fontSize: 9, color: COLORS.textSecondary, letterSpacing: 3, fontWeight: '700', marginTop: 2 },
 });
 
 interface MetricCardProps {
@@ -48,7 +58,7 @@ interface MetricCardProps {
   color?: string;
 }
 
-function MetricCard({ label, value, unit, icon, sub, color = '#fff' }: MetricCardProps) {
+function MetricCard({ label, value, unit, icon, sub, color = COLORS.textPrimary }: MetricCardProps) {
   return (
     <View style={mc.card}>
       {icon && <Text style={mc.icon}>{icon}</Text>}
@@ -66,16 +76,16 @@ function MetricCard({ label, value, unit, icon, sub, color = '#fff' }: MetricCar
 
 const mc = StyleSheet.create({
   card: {
-    backgroundColor: CARD, borderRadius: 18, borderWidth: 1,
-    borderColor: '#1C2535', padding: 18, flex: 1,
+    backgroundColor: COLORS.surface, borderRadius: RADIUS.card, borderWidth: 1,
+    borderColor: COLORS.border, padding: 16, flex: 1,
     minHeight: 110,
   },
   icon: { fontSize: 22, marginBottom: 8 },
-  label: { fontSize: 10, color: '#4D6478', letterSpacing: 2, fontWeight: '700', marginBottom: 8 },
+  label: { fontSize: 10, color: COLORS.textSecondary, letterSpacing: 2, fontWeight: '700', marginBottom: 8 },
   valueRow: { flexDirection: 'row', alignItems: 'flex-end', gap: 4 },
   value: { fontSize: 30, fontWeight: '900', letterSpacing: -1 },
-  unit: { fontSize: 13, color: '#5B7080', paddingBottom: 4 },
-  sub: { fontSize: 11, color: '#4D6478', marginTop: 6, fontWeight: '600' },
+  unit: { fontSize: 13, color: COLORS.textSecondary, paddingBottom: 4 },
+  sub: { fontSize: 11, color: COLORS.textSecondary, marginTop: 6, fontWeight: '600' },
 });
 
 export default function BiometricsScreen({ onBack }: Props) {
@@ -115,15 +125,15 @@ export default function BiometricsScreen({ onBack }: Props) {
   };
 
   const hrvColor = (hrv?: number) => {
-    if (hrv == null) return '#fff';
-    if (hrv >= 60) return G;
-    if (hrv >= 40) return '#F59E0B';
-    return '#EF4444';
+    if (hrv == null) return COLORS.textPrimary;
+    if (hrv >= 60) return COLORS.primary;
+    if (hrv >= 40) return COLORS.warning;
+    return COLORS.error;
   };
 
   return (
     <SafeAreaView style={s.container}>
-      <StatusBar barStyle="light-content" backgroundColor={BG} />
+      <StatusBar barStyle="light-content" backgroundColor={COLORS.background} />
 
       <View style={s.topBar}>
         <TouchableOpacity onPress={onBack} style={s.backBtn}>
@@ -135,7 +145,7 @@ export default function BiometricsScreen({ onBack }: Props) {
 
       {loading ? (
         <View style={s.center}>
-          <ActivityIndicator size="large" color={G} />
+          <ActivityIndicator size="large" color={COLORS.primary} />
           <Text style={s.loadingText}>Loading data…</Text>
         </View>
       ) : error ? (
@@ -153,7 +163,7 @@ export default function BiometricsScreen({ onBack }: Props) {
             <RefreshControl
               refreshing={refreshing}
               onRefresh={() => fetchData(true)}
-              tintColor={G}
+              tintColor={COLORS.primary}
             />
           }
         >
@@ -231,14 +241,14 @@ export default function BiometricsScreen({ onBack }: Props) {
                   icon="🌙"
                   sub={sleepQualityLabel(bio.sleep_quality)}
                   color={bio.sleep_hours != null
-                    ? bio.sleep_hours >= 7.5 ? G : bio.sleep_hours >= 6 ? '#F59E0B' : '#EF4444'
-                    : '#fff'}
+                    ? bio.sleep_hours >= 7.5 ? COLORS.primary : bio.sleep_hours >= 6 ? COLORS.warning : COLORS.error
+                    : COLORS.textPrimary}
                 />
                 <MetricCard
                   label="STEPS"
                   value={bio.steps != null ? bio.steps.toLocaleString() : undefined}
                   icon="👟"
-                  color={bio.steps != null && bio.steps >= 10000 ? G : '#fff'}
+                  color={bio.steps != null && bio.steps >= 10000 ? COLORS.primary : COLORS.textPrimary}
                   sub={bio.steps != null && bio.steps >= 10000 ? 'Goal reached 🎯' : undefined}
                 />
               </View>
@@ -252,7 +262,7 @@ export default function BiometricsScreen({ onBack }: Props) {
                       value={bio.resting_hr}
                       unit="bpm"
                       icon="💓"
-                      color={bio.resting_hr <= 60 ? G : bio.resting_hr <= 75 ? '#F59E0B' : '#EF4444'}
+                      color={bio.resting_hr <= 60 ? COLORS.primary : bio.resting_hr <= 75 ? COLORS.warning : COLORS.error}
                     />
                   )}
                   {bio.recovery_score != null && (
@@ -261,7 +271,7 @@ export default function BiometricsScreen({ onBack }: Props) {
                       value={bio.recovery_score}
                       unit="%"
                       icon="🔋"
-                      color={bio.recovery_score >= 70 ? G : bio.recovery_score >= 50 ? '#F59E0B' : '#EF4444'}
+                      color={bio.recovery_score >= 70 ? COLORS.primary : bio.recovery_score >= 50 ? COLORS.warning : COLORS.error}
                     />
                   )}
                 </View>
@@ -285,47 +295,47 @@ export default function BiometricsScreen({ onBack }: Props) {
 }
 
 const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: BG },
+  container: { flex: 1, backgroundColor: COLORS.background },
   topBar: {
     flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
-    paddingHorizontal: 20, paddingTop: 16, paddingBottom: 12,
-    borderBottomWidth: 1, borderBottomColor: '#161616',
+    paddingHorizontal: 16, paddingTop: 16, paddingBottom: 12,
+    borderBottomWidth: 1, borderBottomColor: COLORS.border,
   },
   backBtn: { width: 60 },
-  backText: { fontSize: 15, color: G, fontWeight: '600' },
-  title: { fontSize: 11, letterSpacing: 4, color: '#5B7080', fontWeight: '700' },
-  scroll: { padding: 20 },
+  backText: { fontSize: 16, color: COLORS.primary, fontWeight: '600' },
+  title: { fontSize: 12, letterSpacing: 3, color: COLORS.textSecondary, fontWeight: '700' },
+  scroll: { padding: 16 },
   center: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 40 },
-  loadingText: { color: '#5B7080', fontSize: 13, marginTop: 12 },
+  loadingText: { color: COLORS.textSecondary, fontSize: 14, marginTop: 12 },
   errorIcon: { fontSize: 32, marginBottom: 12 },
-  errorText: { color: '#FF6B6B', fontSize: 14, textAlign: 'center', marginBottom: 20 },
+  errorText: { color: COLORS.error, fontSize: 14, textAlign: 'center', marginBottom: 20 },
   retryBtn: {
-    backgroundColor: '#141D2B', borderRadius: 12, paddingHorizontal: 24, paddingVertical: 12,
-    borderWidth: 1, borderColor: '#1C2535',
+    backgroundColor: COLORS.surfaceElevated, borderRadius: RADIUS.button, paddingHorizontal: 24, paddingVertical: 12,
+    borderWidth: 1, borderColor: COLORS.border,
   },
-  retryText: { color: G, fontWeight: '700', fontSize: 14 },
+  retryText: { color: COLORS.primary, fontWeight: '700', fontSize: 14 },
   section: { marginBottom: 24 },
   sectionLabel: {
-    fontSize: 10, letterSpacing: 4, color: '#4A6078',
-    fontWeight: '700', marginBottom: 14,
+    fontSize: 11, letterSpacing: 2, color: COLORS.textSecondary,
+    fontWeight: '600', marginBottom: 14,
   },
-  bioDate: { fontSize: 11, color: '#4D6478', marginBottom: 12 },
+  bioDate: { fontSize: 12, color: COLORS.textSecondary, marginBottom: 12 },
   compCard: {
-    backgroundColor: CARD, borderRadius: 20, borderWidth: 1,
-    borderColor: '#1C2535', padding: 24, alignItems: 'center',
+    backgroundColor: COLORS.surface, borderRadius: RADIUS.card, borderWidth: 1,
+    borderColor: COLORS.border, padding: 20, alignItems: 'center',
   },
   compStats: { flexDirection: 'row', gap: 40, marginTop: 20 },
   compStat: { alignItems: 'center' },
-  compStatVal: { fontSize: 24, color: '#fff', fontWeight: '800' },
-  compStatLabel: { fontSize: 9, color: '#4A6078', letterSpacing: 2, fontWeight: '700', marginTop: 2 },
+  compStatVal: { fontSize: 24, color: COLORS.textPrimary, fontWeight: '800' },
+  compStatLabel: { fontSize: 10, color: COLORS.textSecondary, letterSpacing: 2, fontWeight: '600', marginTop: 2 },
   compMessage: {
-    marginTop: 18, borderTopWidth: 1, borderTopColor: '#1C2535',
+    marginTop: 18, borderTopWidth: 1, borderTopColor: COLORS.border,
     paddingTop: 16, width: '100%',
   },
-  compMessageText: { fontSize: 13, color: '#6B8090', fontStyle: 'italic', textAlign: 'center', lineHeight: 20 },
+  compMessageText: { fontSize: 13, color: COLORS.textSecondary, fontStyle: 'italic', textAlign: 'center', lineHeight: 20 },
   row: { flexDirection: 'row', gap: 12, marginBottom: 12 },
   emptyState: { alignItems: 'center', paddingVertical: 60 },
   emptyEmoji: { fontSize: 48, marginBottom: 16 },
-  emptyTitle: { fontSize: 20, color: '#fff', fontWeight: '600', marginBottom: 8 },
-  emptySub: { fontSize: 14, color: '#5B7080', textAlign: 'center' },
+  emptyTitle: { fontSize: 20, color: COLORS.textPrimary, fontWeight: '600', marginBottom: 8 },
+  emptySub: { fontSize: 14, color: COLORS.textSecondary, textAlign: 'center' },
 });
