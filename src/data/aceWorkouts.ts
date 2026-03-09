@@ -11,6 +11,7 @@ export interface Exercise {
   coachingNote?: string;
   vitruvianWeight?: number; // in LBS — converted to kg when sending to machine
   vitruvianMode?: VitruvianMode;
+  supersetGroup?: string; // exercises with same group alternate (A→B→rest→A→B→rest)
 }
 
 export interface Workout {
@@ -32,10 +33,10 @@ export const ACE_WORKOUTS: Workout[] = [
     focus: 'Chest, Shoulders, Triceps',
     durationMin: 40,
     exercises: [
-      { id: 'chest_press', name: 'Bench Press', sets: 4, reps: '6-8', rest: 90, equipment: ['vitruvian'], vitruvianWeight: 60, vitruvianMode: 'echo-harder', coachingNote: 'Full range, pause at chest' },
-      { id: 'shoulder_press', name: 'Shoulder Press', sets: 4, reps: '10-12', rest: 75, equipment: ['vitruvian'], vitruvianWeight: 30, vitruvianMode: 'echo-hard', coachingNote: 'Brace core, no arch' },
-      { id: 'incline_press', name: 'Incline Bench Press', sets: 3, reps: '10-12', rest: 75, equipment: ['vitruvian'], vitruvianWeight: 50, vitruvianMode: 'echo-hard', coachingNote: 'Upper chest focus, 30-45° angle' },
-      { id: 'lateral_raise', name: 'Lateral Raise', sets: 3, reps: '12-15', rest: 60, equipment: ['dumbbells'], coachingNote: 'Lead with elbows — 15 lbs' },
+      { id: 'chest_press', name: 'Bench Press', sets: 4, reps: '6-8', rest: 90, equipment: ['vitruvian'], vitruvianWeight: 60, vitruvianMode: 'echo-harder', coachingNote: 'Full range, pause at chest', supersetGroup: 'ss1' },
+      { id: 'shoulder_press', name: 'Shoulder Press', sets: 4, reps: '10-12', rest: 75, equipment: ['vitruvian'], vitruvianWeight: 30, vitruvianMode: 'echo-hard', coachingNote: 'Brace core, no arch', supersetGroup: 'ss1' },
+      { id: 'incline_press', name: 'Incline Bench Press', sets: 3, reps: '10-12', rest: 75, equipment: ['vitruvian'], vitruvianWeight: 50, vitruvianMode: 'echo-hard', coachingNote: 'Upper chest focus, 30-45° angle', supersetGroup: 'ss2' },
+      { id: 'lateral_raise', name: 'Lateral Raise', sets: 3, reps: '12-15', rest: 60, equipment: ['dumbbells'], coachingNote: 'Lead with elbows — 15 lbs', supersetGroup: 'ss2' },
       { id: 'overhead_tricep', name: 'Overhead Tricep Ext.', sets: 3, reps: '15', rest: 60, equipment: ['vitruvian'], vitruvianWeight: 38, vitruvianMode: 'echo-hard', coachingNote: 'Keep elbows close to head' },
     ]
   },
@@ -47,10 +48,10 @@ export const ACE_WORKOUTS: Workout[] = [
     focus: 'Back, Biceps, Rear Delts',
     durationMin: 45,
     exercises: [
-      { id: 'pullup', name: 'Pull-Up', sets: 4, reps: '6-8', rest: 90, equipment: ['pullup_bar'], coachingNote: 'Dead hang to chin over bar' },
-      { id: 'row', name: 'Bent Over Row', sets: 4, reps: '8-10', rest: 90, equipment: ['vitruvian'], vitruvianWeight: 48, vitruvianMode: 'echo-harder', coachingNote: 'Pull to lower chest, squeeze at top' },
-      { id: 'face_pull', name: 'Face Pull', sets: 3, reps: '12-15', rest: 60, equipment: ['trx'], coachingNote: 'Elbows high, external rotate at top' },
-      { id: 'cable_curl', name: 'Cable Curl', sets: 3, reps: '10-12', rest: 60, equipment: ['vitruvian'], vitruvianWeight: 22, vitruvianMode: 'echo-hard', coachingNote: 'Supinate at top, control down' },
+      { id: 'pullup', name: 'Pull-Up', sets: 4, reps: '6-8', rest: 90, equipment: ['pullup_bar'], coachingNote: 'Dead hang to chin over bar', supersetGroup: 'ss1' },
+      { id: 'row', name: 'Bent Over Row', sets: 4, reps: '8-10', rest: 90, equipment: ['vitruvian'], vitruvianWeight: 48, vitruvianMode: 'echo-harder', coachingNote: 'Pull to lower chest, squeeze at top', supersetGroup: 'ss1' },
+      { id: 'face_pull', name: 'Face Pull', sets: 3, reps: '12-15', rest: 60, equipment: ['trx'], coachingNote: 'Elbows high, external rotate at top', supersetGroup: 'ss2' },
+      { id: 'cable_curl', name: 'Cable Curl', sets: 3, reps: '10-12', rest: 60, equipment: ['vitruvian'], vitruvianWeight: 22, vitruvianMode: 'echo-hard', coachingNote: 'Supinate at top, control down', supersetGroup: 'ss2' },
       { id: 'rear_delt_fly', name: 'Rear Delt Fly', sets: 3, reps: '15-20', rest: 60, equipment: ['dumbbells'], coachingNote: 'Bend 45°, pinky up, squeeze at top' },
     ]
   },
@@ -77,10 +78,10 @@ export const ACE_WORKOUTS: Workout[] = [
     focus: 'Chest, Shoulders, Triceps',
     durationMin: 40,
     exercises: [
-      { id: 'incline_chest_press', name: 'Incline Bench Press', sets: 4, reps: '8-10', rest: 90, equipment: ['vitruvian'], vitruvianWeight: 50, vitruvianMode: 'echo-hard', coachingNote: 'Upper chest focus, 30-45° angle' },
-      { id: 'cable_fly', name: 'Lying Pec Fly', sets: 3, reps: '15-20', rest: 60, equipment: ['vitruvian'], vitruvianWeight: 29, vitruvianMode: 'echo-hard', coachingNote: 'Slight bend in elbow, squeeze at center' },
-      { id: 'shoulder_press_b', name: 'Shoulder Press', sets: 3, reps: '10-12', rest: 75, equipment: ['vitruvian'], vitruvianWeight: 30, vitruvianMode: 'echo-hard', coachingNote: 'Brace core, no arch' },
-      { id: 'lateral_raise_b', name: 'Lateral Raise', sets: 3, reps: '12-15', rest: 60, equipment: ['dumbbells'], coachingNote: 'Lead with elbows — 15 lbs' },
+      { id: 'incline_chest_press', name: 'Incline Bench Press', sets: 4, reps: '8-10', rest: 90, equipment: ['vitruvian'], vitruvianWeight: 50, vitruvianMode: 'echo-hard', coachingNote: 'Upper chest focus, 30-45° angle', supersetGroup: 'ss1' },
+      { id: 'cable_fly', name: 'Lying Pec Fly', sets: 3, reps: '15-20', rest: 60, equipment: ['vitruvian'], vitruvianWeight: 29, vitruvianMode: 'echo-hard', coachingNote: 'Slight bend in elbow, squeeze at center', supersetGroup: 'ss1' },
+      { id: 'shoulder_press_b', name: 'Shoulder Press', sets: 3, reps: '10-12', rest: 75, equipment: ['vitruvian'], vitruvianWeight: 30, vitruvianMode: 'echo-hard', coachingNote: 'Brace core, no arch', supersetGroup: 'ss2' },
+      { id: 'lateral_raise_b', name: 'Lateral Raise', sets: 3, reps: '12-15', rest: 60, equipment: ['dumbbells'], coachingNote: 'Lead with elbows — 15 lbs', supersetGroup: 'ss2' },
       { id: 'overhead_tricep_b', name: 'Overhead Tricep Ext.', sets: 3, reps: '15', rest: 60, equipment: ['vitruvian'], vitruvianWeight: 38, vitruvianMode: 'echo-hard', coachingNote: 'Keep elbows close to head' },
     ]
   },
@@ -92,10 +93,10 @@ export const ACE_WORKOUTS: Workout[] = [
     focus: 'Back, Biceps, Rear Delts',
     durationMin: 45,
     exercises: [
-      { id: 'trx_row', name: 'TRX Row', sets: 4, reps: '10-12', rest: 75, equipment: ['trx'], coachingNote: 'Body at angle, squeeze shoulder blades' },
-      { id: 'lat_pulldown', name: 'Lat Pulldown', sets: 4, reps: '10', rest: 90, equipment: ['vitruvian'], vitruvianWeight: 48, vitruvianMode: 'echo-harder', coachingNote: 'Drive elbows to hips, lean back slightly' },
-      { id: 'cable_row', name: 'Seated Cable Row', sets: 3, reps: '12', rest: 75, equipment: ['vitruvian'], vitruvianWeight: 48, vitruvianMode: 'echo-hard', coachingNote: 'Full stretch, full contraction' },
-      { id: 'cable_curl_b', name: 'Cable Curl', sets: 3, reps: '10-12', rest: 60, equipment: ['vitruvian'], vitruvianWeight: 22, vitruvianMode: 'echo-hard', coachingNote: 'Supinate at top, control down' },
+      { id: 'trx_row', name: 'TRX Row', sets: 4, reps: '10-12', rest: 75, equipment: ['trx'], coachingNote: 'Body at angle, squeeze shoulder blades', supersetGroup: 'ss1' },
+      { id: 'lat_pulldown', name: 'Lat Pulldown', sets: 4, reps: '10', rest: 90, equipment: ['vitruvian'], vitruvianWeight: 48, vitruvianMode: 'echo-harder', coachingNote: 'Drive elbows to hips, lean back slightly', supersetGroup: 'ss1' },
+      { id: 'cable_row', name: 'Seated Cable Row', sets: 3, reps: '12', rest: 75, equipment: ['vitruvian'], vitruvianWeight: 48, vitruvianMode: 'echo-hard', coachingNote: 'Full stretch, full contraction', supersetGroup: 'ss2' },
+      { id: 'cable_curl_b', name: 'Cable Curl', sets: 3, reps: '10-12', rest: 60, equipment: ['vitruvian'], vitruvianWeight: 22, vitruvianMode: 'echo-hard', coachingNote: 'Supinate at top, control down', supersetGroup: 'ss2' },
       { id: 'rear_delt_fly_b', name: 'Rear Delt Fly', sets: 3, reps: '15-20', rest: 60, equipment: ['dumbbells'], coachingNote: 'Bend 45°, pinky up, squeeze at top' },
     ]
   },

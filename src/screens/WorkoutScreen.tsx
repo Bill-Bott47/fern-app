@@ -59,7 +59,7 @@ type Props = {
   vitruvian?: Device;
 };
 
-type WorkoutPhase = 'idle' | 'calibrating' | 'working' | 'resting';
+type WorkoutPhase = 'idle' | 'calibrating' | 'working' | 'resting' | 'transitioning';
 
 export default function WorkoutScreen({ workout, onBack, vitruvian }: Props) {
   // Exercise & set tracking
@@ -71,6 +71,8 @@ export default function WorkoutScreen({ workout, onBack, vitruvian }: Props) {
   const [phase, setPhase] = useState<WorkoutPhase>('idle');
   const [repCount, setRepCount] = useState(0);
   const [currentLoad, setCurrentLoad] = useState<number | null>(null);
+  const [transitionSeconds, setTransitionSeconds] = useState(0);
+  const [transitionTargetName, setTransitionTargetName] = useState('');
   
   // Rest timer
   const [restSeconds, setRestSeconds] = useState(0);
@@ -91,6 +93,9 @@ export default function WorkoutScreen({ workout, onBack, vitruvian }: Props) {
   // Refs
   const measuringRef = useRef(false);
   const repSubscriptionRef = useRef<any>(null);
+  const calibReadyRef = useRef(false);
+  const transitionTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const transitionIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const exercises = workout.exercises;
   const currentEx = exercises[currentExIndex];
@@ -101,6 +106,8 @@ export default function WorkoutScreen({ workout, onBack, vitruvian }: Props) {
     return () => {
       stopMeasuring();
       if (restTimerRef.current) clearInterval(restTimerRef.current);
+      if (transitionTimeoutRef.current) clearTimeout(transitionTimeoutRef.current);
+      if (transitionIntervalRef.current) clearInterval(transitionIntervalRef.current);
       if (repSubscriptionRef.current) {
         repSubscriptionRef.current.remove();
         repSubscriptionRef.current = null;
@@ -173,6 +180,10 @@ export default function WorkoutScreen({ workout, onBack, vitruvian }: Props) {
         if (prev <= 1) {
           if (restTimerRef.current) clearInterval(restTimerRef.current);
           Vibration.vibrate([0, 200, 100, 200]); // Double vibrate when rest is done
+          // Auto-advance to next exercise after rest
+          if (autoCompleteRef.current) {
+            // Use skipRest logic to find next exercise
+          }
           setPhase('idle');
           return 0;
         }
@@ -182,14 +193,55 @@ export default function WorkoutScreen({ workout, onBack, vitruvian }: Props) {
     return () => { if (restTimerRef.current) clearInterval(restTimerRef.current); };
   }, [phase, restSeconds]);
 
-  // Start exercise: send weight + enter calibration
+  // Auto-transition from calibration to working after 3 reps
+  const calibRepRef = useRef(0);
+  const autoCompleteRef = useRef<(() => void) | null>(null);
+  
+  useEffect(() => {
+    if (phase === 'calibrating') {
+      calibRepRef.current = repCount;
+      if (!calibReadyRef.current) return;
+      if (repCount >= 3) {
+        // Auto-transition to working set
+        setRepCount(0);
+        setPhase('working');
+        Vibration.vibrate([0, 100, 50, 100]); // Signal: calibration done, go!
+      }
+    }
+    
+    // Auto-complete working set when target reps reached
+    if (phase === 'working' && currentEx) {
+      const targetRep = parseInt(currentEx.reps.match(/(\d+)/)?.[1] || '10');
+      if (repCount >= targetRep && currentEx.equipment?.includes('vitruvian')) {
+        Vibration.vibrate([0, 200, 100, 200, 100, 200]); // Triple buzz: set done!
+        // Use ref to call completeSet to avoid circular dependency
+        if (autoCompleteRef.current) autoCompleteRef.current();
+      }
+    }
+  }, [repCount, phase, currentEx]);
+
+  // Start exercise: send weight + begin calibration (auto-flows into working)
   const startExercise = useCallback(async (exIndex: number) => {
     const ex = exercises[exIndex];
     if (!ex) return;
-    
+
+    if (transitionTimeoutRef.current) {
+      clearTimeout(transitionTimeoutRef.current);
+      transitionTimeoutRef.current = null;
+    }
+    if (transitionIntervalRef.current) {
+      clearInterval(transitionIntervalRef.current);
+      transitionIntervalRef.current = null;
+    }
+
     setCurrentExIndex(exIndex);
-    setRepCount(0);
+    setCurrentSet(completedSets[ex.id] || 0);
     setCurrentLoad(null);
+    setTransitionSeconds(0);
+    setTransitionTargetName('');
+    calibRepRef.current = 0;
+    calibReadyRef.current = false;
+    setRepCount(0);
     
     // Initialize manual weight/reps from previous values or defaults
     const targetReps = parseInt(ex.reps.match(/(\d+)/)?.[1] || '10');
@@ -199,6 +251,9 @@ export default function WorkoutScreen({ workout, onBack, vitruvian }: Props) {
     
     if (ex.equipment?.includes('vitruvian') && vitruvian) {
       setPhase('calibrating');
+      setTimeout(() => {
+        calibReadyRef.current = true;
+      }, 500);
       try {
         const isEcho = (ex.vitruvianMode || 'old-school').startsWith('echo');
         const weightKg = isEcho ? 0 : (ex.vitruvianWeight || 0) * 0.4536;
@@ -209,22 +264,59 @@ export default function WorkoutScreen({ workout, onBack, vitruvian }: Props) {
     } else {
       // Non-Vitruvian exercise — go straight to working
       setPhase('working');
+      calibReadyRef.current = true;
     }
-  }, [exercises, vitruvian]);
+  }, [completedSets, exercises, manualReps, vitruvian]);
 
-  // Complete calibration (after 3 practice reps) → start working set
-  const finishCalibration = useCallback(() => {
-    setRepCount(0);
-    setPhase('working');
-  }, []);
+  const getSupersetPartner = useCallback((exIndex: number): number | null => {
+    const ex = exercises[exIndex];
+    if (!ex?.supersetGroup) return null;
 
-  // Complete current set
-  const completeSet = useCallback(() => {
+    const nextIndex = exIndex + 1;
+    if (exercises[nextIndex]?.supersetGroup === ex.supersetGroup) return nextIndex;
+
+    const prevIndex = exIndex - 1;
+    if (exercises[prevIndex]?.supersetGroup === ex.supersetGroup) return prevIndex;
+
+    return null;
+  }, [exercises]);
+
+  const getResumeExerciseIndex = useCallback((exIndex: number, nextCompletedSets: Record<string, number>): number | null => {
+    const ex = exercises[exIndex];
+    if (!ex) return null;
+
+    const partnerIdx = getSupersetPartner(exIndex);
+    if (partnerIdx !== null) {
+      const firstIndex = Math.min(exIndex, partnerIdx);
+      const secondIndex = Math.max(exIndex, partnerIdx);
+      const firstEx = exercises[firstIndex];
+      const secondEx = exercises[secondIndex];
+
+      if ((nextCompletedSets[firstEx.id] || 0) < firstEx.sets) return firstIndex;
+      if ((nextCompletedSets[secondEx.id] || 0) < secondEx.sets) return secondIndex;
+
+      return secondIndex + 1 < exercises.length ? secondIndex + 1 : null;
+    }
+
+    if ((nextCompletedSets[ex.id] || 0) < ex.sets) return exIndex;
+    return exIndex + 1 < exercises.length ? exIndex + 1 : null;
+  }, [exercises, getSupersetPartner]);
+
+  // Complete current set — STOP MACHINE FIRST for safety
+  const completeSet = useCallback(async () => {
+    // Prevent double-completion
+    if (phase !== 'working') return;
     const ex = exercises[currentExIndex];
     if (!ex) return;
     
+    // CRITICAL: Remove tension so user can get out safely
+    if (vitruvian && ex.equipment?.includes('vitruvian')) {
+      try { await stopMachine(vitruvian); } catch (e) { console.log('Stop error:', e); }
+    }
+    
     const setsDone = (completedSets[ex.id] || 0) + 1;
-    setCompletedSets(prev => ({ ...prev, [ex.id]: setsDone }));
+    const nextCompletedSets = { ...completedSets, [ex.id]: setsDone };
+    setCompletedSets(nextCompletedSets);
     
     // Log this set with manual or Vitruvian data
     const isVit = ex.equipment?.includes('vitruvian');
@@ -232,7 +324,7 @@ export default function WorkoutScreen({ workout, onBack, vitruvian }: Props) {
     const logWeight = isVit ? (ex.vitruvianWeight || 0) : (manualWeight[ex.id] || 0);
     const logReps = isVit ? (repCount || manualReps[ex.id] || parseInt(ex.reps) || 10) : (manualReps[ex.id] || parseInt(ex.reps) || 10);
     
-    setLoggedSets(prev => [...prev, {
+    const setLog: SetLog = {
       exerciseId: ex.id,
       exerciseName: ex.name,
       setNumber: setsDone,
@@ -241,70 +333,86 @@ export default function WorkoutScreen({ workout, onBack, vitruvian }: Props) {
       mode: ex.vitruvianMode || (isDumbbell ? 'dumbbell' : 'bodyweight'),
       peakLoad: isVit ? Math.round(peakLoadRef.current * 2.205) : logWeight,
       band: bandAssist[ex.id] || undefined,
-    }]);
+    };
+    setLoggedSets(prev => [...prev, setLog]);
     peakLoadRef.current = 0;
     setRepCount(0);
     
-    // Check if all sets done for this exercise
-    if (setsDone >= ex.sets) {
-      // Move to next exercise
-      const nextIndex = currentExIndex + 1;
-      if (nextIndex >= exercises.length) {
-        // Workout complete!
-        setPhase('idle');
-        if (vitruvian) stopMachine(vitruvian).catch(() => {});
-        // Submit workout log
-        submitWorkoutLog(workout, loggedSets, workoutStartRef.current);
-        return;
-      }
-      // Start rest before next exercise
-      setPhase('resting');
-      setRestSeconds(ex.rest || 60);
-      setCurrentSet(0);
-      // After rest, start next exercise
-      const afterRest = () => {
-        startExercise(nextIndex);
-      };
-      // Store callback for when rest ends
-      setTimeout(() => {
-        if (phase === 'resting') afterRest();
-      }, (ex.rest || 60) * 1000);
-    } else {
-      // More sets — rest then repeat
-      setCurrentSet(setsDone);
-      setPhase('resting');
-      setRestSeconds(ex.rest || 60);
-    }
-  }, [currentExIndex, exercises, completedSets, vitruvian, startExercise, phase]);
+    const nextEx = exercises[currentExIndex + 1];
+    const shouldTransitionToPartner =
+      !!ex.supersetGroup &&
+      !!nextEx &&
+      nextEx.supersetGroup === ex.supersetGroup &&
+      (nextCompletedSets[nextEx.id] || 0) < nextEx.sets;
 
-  // Skip rest early
+    if (shouldTransitionToPartner) {
+      setPhase('transitioning');
+      setTransitionTargetName(nextEx.name);
+      setTransitionSeconds(2);
+
+      if (transitionIntervalRef.current) clearInterval(transitionIntervalRef.current);
+      transitionIntervalRef.current = setInterval(() => {
+        setTransitionSeconds(prev => (prev > 0 ? prev - 1 : 0));
+      }, 1000);
+
+      if (transitionTimeoutRef.current) clearTimeout(transitionTimeoutRef.current);
+      transitionTimeoutRef.current = setTimeout(() => {
+        if (transitionIntervalRef.current) {
+          clearInterval(transitionIntervalRef.current);
+          transitionIntervalRef.current = null;
+        }
+        transitionTimeoutRef.current = null;
+        startExercise(currentExIndex + 1);
+      }, 2000);
+      return;
+    }
+
+    const resumeIndex = getResumeExerciseIndex(currentExIndex, nextCompletedSets);
+    if (resumeIndex === null) {
+      setPhase('idle');
+      submitWorkoutLog(workout, [...loggedSets, setLog], workoutStartRef.current);
+      return;
+    }
+
+    if (resumeIndex !== currentExIndex) {
+      setCurrentExIndex(resumeIndex);
+      setCurrentSet(nextCompletedSets[exercises[resumeIndex].id] || 0);
+    } else {
+      setCurrentSet(nextCompletedSets[ex.id] || 0);
+    }
+
+    setPhase('resting');
+    setRestSeconds(ex.rest || 60);
+  }, [bandAssist, completedSets, currentExIndex, exercises, getResumeExerciseIndex, loggedSets, manualReps, manualWeight, phase, repCount, startExercise, vitruvian, workout]);
+
+  // Wire auto-complete ref
+  useEffect(() => { autoCompleteRef.current = completeSet; }, [completeSet]);
+
+  // Skip rest / rest ends — figure out what exercise to go to next
   const skipRest = useCallback(() => {
     if (restTimerRef.current) clearInterval(restTimerRef.current);
     setRestSeconds(0);
     setPhase('idle');
     
+    // Find the next exercise that still needs sets
+    // Prioritize: current exercise (if has sets left), then superset partner, then next group
     const ex = exercises[currentExIndex];
     const setsDone = completedSets[ex?.id] || 0;
-    if (ex && setsDone >= ex.sets) {
-      // Move to next exercise
-      const nextIndex = currentExIndex + 1;
-      if (nextIndex < exercises.length) {
-        startExercise(nextIndex);
-      }
+    
+    if (ex && setsDone < ex.sets) {
+      // Same exercise still has sets — restart it
+      startExercise(currentExIndex);
     } else {
-      // Same exercise, next set — re-send weight
-      if (ex?.vitruvianWeight && vitruvian) {
-        setPhase('working');
-        setRepCount(0);
-        const isEcho = (ex.vitruvianMode || 'old-school').startsWith('echo');
-        const wKg = isEcho ? 0 : (ex.vitruvianWeight || 0) * 0.4536;
-        setResistance(vitruvian, wKg, ex.vitruvianMode || 'old-school').catch(() => {});
-      } else {
-        setPhase('working');
-        setRepCount(0);
+      // Find next incomplete exercise
+      for (let i = 0; i < exercises.length; i++) {
+        const e = exercises[i];
+        if ((completedSets[e.id] || 0) < e.sets) {
+          startExercise(i);
+          return;
+        }
       }
     }
-  }, [currentExIndex, exercises, completedSets, vitruvian, startExercise]);
+  }, [currentExIndex, exercises, completedSets, startExercise]);
 
   // Format time
   const formatTime = (s: number) => {
@@ -357,6 +465,14 @@ export default function WorkoutScreen({ workout, onBack, vitruvian }: Props) {
         </View>
       )}
 
+      {phase === 'transitioning' && (
+        <View style={styles.transitionOverlay}>
+          <Text style={styles.transitionLabel}>TRANSITION</Text>
+          <Text style={styles.transitionTarget}>Get ready: {transitionTargetName}</Text>
+          <Text style={styles.transitionTimer}>{transitionSeconds}s</Text>
+        </View>
+      )}
+
       {/* Live Load Display */}
       {(phase === 'working' || phase === 'calibrating') && currentLoad !== null && (
         <View style={styles.loadBar}>
@@ -370,15 +486,17 @@ export default function WorkoutScreen({ workout, onBack, vitruvian }: Props) {
         </View>
       )}
 
-      {/* Calibration prompt */}
+      {/* Calibration indicator — auto-advances after 3 reps */}
       {phase === 'calibrating' && (
         <View style={styles.calibrationBar}>
           <Text style={styles.calibrationText}>
-            Do 3 light reps to calibrate, then tap "Ready"
+            🎯 Calibrating — {repCount}/3 reps
           </Text>
-          <TouchableOpacity onPress={finishCalibration} style={styles.readyBtn}>
-            <Text style={styles.readyText}>Ready ✓</Text>
-          </TouchableOpacity>
+          <View style={styles.calibDots}>
+            {[0, 1, 2].map(i => (
+              <View key={i} style={[styles.calibDot, repCount > i && styles.calibDotDone]} />
+            ))}
+          </View>
         </View>
       )}
 
@@ -463,7 +581,7 @@ export default function WorkoutScreen({ workout, onBack, vitruvian }: Props) {
       <ScrollView style={styles.exerciseList}>
         {exercises.map((ex, i) => {
           const done = completedSets[ex.id] || 0;
-          const isActive = i === currentExIndex && phase !== 'idle' && phase !== 'resting';
+          const isActive = i === currentExIndex && phase !== 'idle' && phase !== 'resting' && phase !== 'transitioning';
           const isComplete = done >= ex.sets;
           const isVit = ex.equipment?.includes('vitruvian');
           
@@ -486,6 +604,7 @@ export default function WorkoutScreen({ workout, onBack, vitruvian }: Props) {
                 <View style={styles.exerciseInfo}>
                   <Text style={[styles.exerciseName, isComplete && styles.completedText]}>
                     {isComplete ? '✅ ' : isVit ? '⚡ ' : ''}{ex.name}
+                    {ex.supersetGroup ? ` 🔄` : ''}
                   </Text>
                   <Text style={styles.exerciseDetail}>
                     {done}/{ex.sets} sets • {ex.reps} reps • {ex.rest}s rest
@@ -561,6 +680,14 @@ const styles = StyleSheet.create({
     borderRadius: 20, marginTop: 8 
   },
   skipText: { color: '#F0F4FF', fontSize: 14, fontWeight: '600' },
+
+  transitionOverlay: {
+    backgroundColor: '#24180A', padding: 24, margin: 16, borderRadius: 16,
+    alignItems: 'center', borderWidth: 1, borderColor: '#F59E0B'
+  },
+  transitionLabel: { color: '#F59E0B', fontSize: 16, fontWeight: '700', letterSpacing: 2 },
+  transitionTarget: { color: '#F0F4FF', fontSize: 24, fontWeight: '700', marginTop: 10, textAlign: 'center' },
+  transitionTimer: { color: '#FCD34D', fontSize: 48, fontWeight: '800', marginTop: 8 },
   
   // Live load
   loadBar: { 
@@ -573,13 +700,14 @@ const styles = StyleSheet.create({
   
   // Calibration
   calibrationBar: { 
-    backgroundColor: '#141D2B', padding: 12, marginHorizontal: 16, marginTop: 8,
-    borderRadius: 12, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
+    backgroundColor: '#2a2a1a', padding: 16, marginHorizontal: 16, marginTop: 8,
+    borderRadius: 12, alignItems: 'center',
     borderWidth: 1, borderColor: '#FFD700'
   },
-  calibrationText: { color: '#FFD700', fontSize: 13, flex: 1, marginRight: 12 },
-  readyBtn: { backgroundColor: '#FFD700', paddingHorizontal: 16, paddingVertical: 8, borderRadius: 8 },
-  readyText: { color: '#000', fontWeight: '700', fontSize: 14 },
+  calibrationText: { color: '#FFD700', fontSize: 14, fontWeight: '600' },
+  calibDots: { flexDirection: 'row', gap: 8, marginTop: 8 },
+  calibDot: { width: 20, height: 20, borderRadius: 10, backgroundColor: '#333' },
+  calibDotDone: { backgroundColor: '#FFD700' },
   
   // Working
   workingBar: { 
