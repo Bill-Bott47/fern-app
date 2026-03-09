@@ -15,27 +15,30 @@ import TipsScreen from './src/screens/TipsScreen';
 
 // Design System - Luxury Fitness Theme
 const COLORS = {
-  primary: '#C9A84C',       // Gold
-  primaryMuted: '#9A7B2F', // Muted gold
-  background: '#0A0A0A',    // Deep black
-  surface: '#141414',       // Card background
-  surfaceElevated: '#1E1E1E', // Elevated surfaces
-  textPrimary: '#FFFFFF',
-  textSecondary: '#8A8A8A',
-  textTertiary: '#5A5A5A',
-  border: '#2A2A2A',
+  primary: '#D4AF37',       // Rich gold
+  primaryMuted: '#B8962E', // Deep gold
+  primaryGlow: 'rgba(212,175,55,0.25)',
+  background: '#060607',    // Rich black
+  surface: '#0E0E10',       // Card background
+  surfaceElevated: '#18181C', // Elevated surfaces
+  surfaceHighlight: '#222228',
+  textPrimary: '#FAFAFA',
+  textSecondary: '#A1A1AA',
+  textTertiary: '#52525B',
+  border: '#27272A',
+  borderLight: 'rgba(255,255,255,0.06)',
   success: '#22C55E',
   warning: '#FBBF24',
   error: '#EF4444',
 };
-const RADIUS = { card: 16, button: 10 };
+const RADIUS = { card: 20, button: 12, pill: 24 };
 const SPACING = {
   xs: 4,
   sm: 8,
-  md: 12,
-  lg: 16,
-  xl: 22,
-  xxl: 32,
+  md: 14,
+  lg: 18,
+  xl: 24,
+  xxl: 36,
 };
 
 type Screen = 'home' | 'workout' | 'connect' | 'history' | 'biometrics' | 'tips';
@@ -449,41 +452,41 @@ const s = StyleSheet.create({
   container: { flex: 1, backgroundColor: COLORS.background },
   scroll: { padding: SPACING.lg, paddingBottom: 100 },
   // ─── Header ─────────────────────────────────────────────────────
-  wordmark: { fontSize: 11, letterSpacing: 8, color: COLORS.primary, fontWeight: '700', marginBottom: SPACING.xs },
-  date: { fontSize: 24, color: COLORS.textPrimary, fontWeight: '200', marginBottom: SPACING.xl },
+  wordmark: { fontSize: 11, letterSpacing: 10, color: COLORS.primary, fontWeight: '700', marginBottom: SPACING.xs },
+  date: { fontSize: 26, color: COLORS.textPrimary, fontWeight: '200', marginBottom: SPACING.xl, letterSpacing: -0.5 },
   // ─── Week Strip ─────────────────────────────────────────────────
-  weekStrip: { flexDirection: 'row', justifyContent: 'space-between', backgroundColor: COLORS.surface, borderRadius: RADIUS.card, padding: SPACING.lg, marginBottom: SPACING.xl, borderWidth: 1, borderColor: COLORS.border },
+  weekStrip: { flexDirection: 'row', justifyContent: 'space-between', backgroundColor: COLORS.surface, borderRadius: RADIUS.card, padding: SPACING.lg, marginBottom: SPACING.xl, borderWidth: 1, borderColor: COLORS.borderLight },
   dayCol: { alignItems: 'center', gap: SPACING.sm },
   dayColActive: {},
   pip: { width: 5, height: 5, borderRadius: 2.5, backgroundColor: COLORS.border },
-  pipActive: { backgroundColor: COLORS.primary, width: 16, height: 6, borderRadius: 3 },
+  pipActive: { backgroundColor: COLORS.primary, width: 18, height: 6, borderRadius: 3, shadowColor: COLORS.primary, shadowOffset: {width:0,height:0}, shadowOpacity: 0.6, shadowRadius: 6 },
   dayLetter: { fontSize: 11, color: COLORS.textSecondary, fontWeight: '600' },
-  dayLetterActive: { color: COLORS.primary },
+  dayLetterActive: { color: COLORS.primary, fontWeight: '700' },
   // ─── Today Card ─────────────────────────────────────────────────
-  todayCard: { backgroundColor: COLORS.surface, borderRadius: RADIUS.card, borderWidth: 1, borderColor: COLORS.border, padding: SPACING.xl, marginBottom: SPACING.xl },
-  todayPill: { alignSelf: 'flex-start', backgroundColor: 'rgba(201,168,76,0.1)', borderWidth: 1, borderColor: 'rgba(201,168,76,0.25)', borderRadius: 20, paddingHorizontal: SPACING.md, paddingVertical: SPACING.xs, marginBottom: SPACING.md },
+  todayCard: { backgroundColor: COLORS.surface, borderRadius: RADIUS.card, borderWidth: 1, borderColor: COLORS.borderLight, padding: SPACING.xl, marginBottom: SPACING.xl, shadowColor: '#000', shadowOffset: {width:0,height:8}, shadowOpacity: 0.4, shadowRadius: 24, elevation: 8 },
+  todayPill: { alignSelf: 'flex-start', backgroundColor: COLORS.primaryGlow, borderWidth: 1, borderColor: COLORS.primaryMuted, borderRadius: RADIUS.pill, paddingHorizontal: SPACING.md, paddingVertical: SPACING.xs, marginBottom: SPACING.md },
   todayPillText: { fontSize: 10, color: COLORS.primary, fontWeight: '700', letterSpacing: 2 },
   todayName: { fontSize: 34, color: COLORS.textPrimary, fontWeight: '900', letterSpacing: -1.5, marginBottom: SPACING.xs },
   todayFocus: { fontSize: 14, color: COLORS.textSecondary, marginBottom: SPACING.lg },
   chips: { flexDirection: 'row', gap: SPACING.sm, marginBottom: SPACING.xl, flexWrap: 'wrap' },
-  chip: { backgroundColor: COLORS.surfaceElevated, borderWidth: 1, borderColor: COLORS.border, borderRadius: 20, paddingHorizontal: SPACING.md, paddingVertical: SPACING.sm },
+  chip: { backgroundColor: COLORS.surfaceElevated, borderWidth: 1, borderColor: COLORS.borderLight, borderRadius: RADIUS.pill, paddingHorizontal: SPACING.md, paddingVertical: SPACING.sm },
   chipText: { fontSize: 11, color: COLORS.textSecondary, fontWeight: '600' },
-  startBtn: { backgroundColor: COLORS.primary, borderRadius: RADIUS.button, paddingVertical: 18, alignItems: 'center', shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.4, shadowRadius: 16, marginBottom: SPACING.md, elevation: 8 },
+  startBtn: { backgroundColor: COLORS.primary, borderRadius: RADIUS.button, paddingVertical: 18, alignItems: 'center', shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.45, shadowRadius: 20, marginBottom: SPACING.md, elevation: 10 },
   startBtnText: { color: '#000', fontWeight: '800', fontSize: 16, letterSpacing: 0.5 },
-  connectBtn: { backgroundColor: COLORS.surfaceElevated, borderRadius: RADIUS.button, paddingVertical: SPACING.md, alignItems: 'center', borderWidth: 1, borderColor: COLORS.border },
+  connectBtn: { backgroundColor: COLORS.surfaceElevated, borderRadius: RADIUS.button, paddingVertical: SPACING.md, alignItems: 'center', borderWidth: 1, borderColor: COLORS.borderLight },
   connectBtnText: { color: COLORS.textSecondary, fontWeight: '600', fontSize: 13 },
   // ─── Rest Card ──────────────────────────────────────────────────
-  restCard: { backgroundColor: COLORS.surface, borderRadius: RADIUS.card, padding: SPACING.xxl, alignItems: 'center', marginBottom: SPACING.xl, borderWidth: 1, borderColor: COLORS.border },
+  restCard: { backgroundColor: COLORS.surface, borderRadius: RADIUS.card, padding: SPACING.xxl, alignItems: 'center', marginBottom: SPACING.xl, borderWidth: 1, borderColor: COLORS.borderLight },
   restEmoji: { fontSize: 48, marginBottom: SPACING.md },
   restTitle: { fontSize: 24, color: COLORS.textPrimary, fontWeight: '600', marginBottom: SPACING.sm },
   restSub: { fontSize: 14, color: COLORS.textSecondary, textAlign: 'center' },
   // ─── Section Labels ─────────────────────────────────────────────
-  secLabel: { fontSize: 10, letterSpacing: 5, color: COLORS.textTertiary, fontWeight: '700', marginBottom: SPACING.md, marginTop: SPACING.md },
+  secLabel: { fontSize: 10, letterSpacing: 6, color: COLORS.textTertiary, fontWeight: '700', marginBottom: SPACING.md, marginTop: SPACING.md },
   // ─── Weekly Schedule ────────────────────────────────────────────
-  schedRow: { flexDirection: 'row', alignItems: 'center', gap: SPACING.md, paddingVertical: SPACING.md, borderBottomWidth: 1, borderBottomColor: COLORS.border },
+  schedRow: { flexDirection: 'row', alignItems: 'center', gap: SPACING.md, paddingVertical: SPACING.md, borderBottomWidth: 1, borderBottomColor: COLORS.borderLight },
   schedRowActive: {},
-  schedBadge: { width: 48, height: 48, borderRadius: RADIUS.button, backgroundColor: COLORS.surfaceElevated, borderWidth: 1, borderColor: COLORS.border, justifyContent: 'center', alignItems: 'center' },
-  schedBadgeActive: { backgroundColor: 'rgba(201,168,76,0.1)', borderColor: 'rgba(201,168,76,0.3)' },
+  schedBadge: { width: 48, height: 48, borderRadius: RADIUS.button, backgroundColor: COLORS.surfaceElevated, borderWidth: 1, borderColor: COLORS.borderLight, justifyContent: 'center', alignItems: 'center' },
+  schedBadgeActive: { backgroundColor: COLORS.primaryGlow, borderColor: COLORS.primaryMuted },
   schedBadgeText: { fontSize: 10, color: COLORS.textSecondary, fontWeight: '800' },
   schedBadgeTextActive: { color: COLORS.primary },
   schedInfo: { flex: 1 },
@@ -493,12 +496,12 @@ const s = StyleSheet.create({
   schedArrow: { fontSize: 20, color: COLORS.textTertiary },
   // ─── ACE Intelligence Nav ───────────────────────────────────────
   aceNav: { flexDirection: 'row', gap: SPACING.md, marginBottom: SPACING.md },
-  aceNavBtn: { flex: 1, backgroundColor: COLORS.surface, borderRadius: RADIUS.card, borderWidth: 1, borderColor: COLORS.border, padding: SPACING.lg, alignItems: 'center', gap: SPACING.xs },
+  aceNavBtn: { flex: 1, backgroundColor: COLORS.surface, borderRadius: RADIUS.card, borderWidth: 1, borderColor: COLORS.borderLight, padding: SPACING.lg, alignItems: 'center', gap: SPACING.xs },
   aceNavIcon: { fontSize: 24 },
   aceNavLabel: { fontSize: 12, color: COLORS.textPrimary, fontWeight: '700', textAlign: 'center' },
   aceNavSub: { fontSize: 9, color: COLORS.textSecondary, textAlign: 'center', lineHeight: 14 },
   // ─── Bottom Nav Bar ─────────────────────────────────────────────
-  bottomNav: { flexDirection: 'row', backgroundColor: COLORS.surface, borderTopWidth: 1, borderTopColor: COLORS.border, paddingBottom: 12, paddingTop: SPACING.sm },
+  bottomNav: { flexDirection: 'row', backgroundColor: COLORS.surface, borderTopWidth: 1, borderTopColor: COLORS.borderLight, paddingBottom: 14, paddingTop: SPACING.sm },
   navTab: { flex: 1, alignItems: 'center', gap: SPACING.xs, paddingVertical: SPACING.sm },
   navTabActive: {},
   navTabIcon: { fontSize: 22 },
@@ -518,8 +521,8 @@ const s = StyleSheet.create({
   wkTitle: { fontSize: 28, color: COLORS.textPrimary, fontWeight: '900', letterSpacing: -1, marginBottom: 4 },
   wkFocus: { fontSize: 13, color: COLORS.textSecondary, marginBottom: 20 },
   // ─── Exercise Cards ─────────────────────────────────────────────
-  exCard: { backgroundColor: COLORS.surface, borderRadius: RADIUS.card, borderWidth: 1, borderColor: COLORS.border, padding: 16, marginBottom: 10 },
-  exCardDone: { borderColor: 'rgba(201,168,76,0.25)', backgroundColor: COLORS.surfaceElevated },
+  exCard: { backgroundColor: COLORS.surface, borderRadius: RADIUS.card, borderWidth: 1, borderColor: COLORS.borderLight, padding: 16, marginBottom: 10 },
+  exCardDone: { borderColor: COLORS.primaryMuted, backgroundColor: COLORS.surfaceElevated },
   exRow: { flexDirection: 'row', gap: 12, marginBottom: 13 },
   exIdx: { fontSize: 10, color: COLORS.textSecondary, fontWeight: '800', width: 20, paddingTop: 3 },
   exIdxDone: { color: COLORS.primary },
@@ -530,16 +533,16 @@ const s = StyleSheet.create({
   exVit: { fontSize: 11, color: COLORS.primary, fontWeight: '600' },
   exNote: { fontSize: 11, color: COLORS.textSecondary, fontStyle: 'italic', marginTop: 4 },
   // ─── Rest Timer Banner ──────────────────────────────────────────
-  restBanner: { flexDirection: 'row', alignItems: 'center', backgroundColor: COLORS.surfaceElevated, borderBottomWidth: 1, borderBottomColor: 'rgba(201,168,76,0.15)', paddingHorizontal: 16, paddingVertical: 14, gap: 12 },
+  restBanner: { flexDirection: 'row', alignItems: 'center', backgroundColor: COLORS.surfaceElevated, borderBottomWidth: 1, borderBottomColor: COLORS.primaryMuted, paddingHorizontal: 16, paddingVertical: 14, gap: 12 },
   restLeft: { width: 52, alignItems: 'center' },
   restLabel: { fontSize: 8, color: COLORS.primary, letterSpacing: 3, fontWeight: '800' },
   restTime: { fontSize: 26, color: COLORS.primary, fontWeight: '900', lineHeight: 30 },
   restBarWrap: { flex: 1, height: 4, backgroundColor: COLORS.border, borderRadius: 2, overflow: 'hidden' },
   restBarFill: { height: 4, backgroundColor: COLORS.primary, borderRadius: 2 },
-  restSkip: { paddingHorizontal: 14, paddingVertical: 8, backgroundColor: COLORS.surface, borderRadius: RADIUS.button, borderWidth: 1, borderColor: COLORS.border },
+  restSkip: { paddingHorizontal: 14, paddingVertical: 8, backgroundColor: COLORS.surface, borderRadius: RADIUS.button, borderWidth: 1, borderColor: COLORS.borderLight },
   restSkipText: { fontSize: 11, color: COLORS.textSecondary, fontWeight: '700' },
   // ─── Measure Card ───────────────────────────────────────────────
-  measureCard: { backgroundColor: COLORS.surfaceElevated, borderRadius: RADIUS.card, borderWidth: 1, borderColor: 'rgba(201,168,76,0.2)', padding: 20, marginBottom: 20, alignItems: 'center' },
+  measureCard: { backgroundColor: COLORS.surfaceElevated, borderRadius: RADIUS.card, borderWidth: 1, borderColor: COLORS.primaryMuted, padding: 20, marginBottom: 20, alignItems: 'center' },
   measureLabel: { fontSize: 9, letterSpacing: 4, color: COLORS.primary, fontWeight: '700', marginBottom: 8 },
   measureRow: { flexDirection: 'row', alignItems: 'flex-end', gap: 6 },
   measureValue: { fontSize: 56, color: COLORS.primary, fontWeight: '900', letterSpacing: -2, lineHeight: 60 },
@@ -548,15 +551,15 @@ const s = StyleSheet.create({
   measureCharUuid: { fontSize: 9, color: COLORS.textSecondary, fontFamily: 'monospace', marginTop: 2 },
   // ─── Connection Banner ──────────────────────────────────────────
   connBanner: { borderRadius: RADIUS.card, paddingVertical: 10, paddingHorizontal: 14, marginBottom: 20, borderWidth: 1, flexDirection: 'row', alignItems: 'center' },
-  connBannerOn: { backgroundColor: 'rgba(201,168,76,0.08)', borderColor: 'rgba(201,168,76,0.25)' },
-  connBannerOff: { backgroundColor: COLORS.surfaceElevated, borderColor: COLORS.border },
+  connBannerOn: { backgroundColor: COLORS.primaryGlow, borderColor: COLORS.primaryMuted },
+  connBannerOff: { backgroundColor: COLORS.surfaceElevated, borderColor: COLORS.borderLight },
   connBannerText: { fontSize: 12, fontWeight: '700' },
   connBannerTextOn: { color: COLORS.primary },
   connBannerTextOff: { color: COLORS.textSecondary },
   // ─── Phase Block ────────────────────────────────────────────────
   phaseBlock: { marginTop: 4 },
   phaseHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 },
-  phasePill: { backgroundColor: 'rgba(201,168,76,0.1)', borderRadius: 20, paddingHorizontal: 10, paddingVertical: 4, borderWidth: 1, borderColor: 'rgba(201,168,76,0.25)' },
+  phasePill: { backgroundColor: COLORS.primaryGlow, borderRadius: RADIUS.pill, paddingHorizontal: 10, paddingVertical: 4, borderWidth: 1, borderColor: COLORS.primaryMuted },
   phasePillText: { fontSize: 9, color: COLORS.primary, fontWeight: '800', letterSpacing: 2 },
   liveKg: { fontSize: 12, color: COLORS.primary, fontWeight: '700' },
   // ─── Calibration ────────────────────────────────────────────────
@@ -567,7 +570,7 @@ const s = StyleSheet.create({
   calHeader: { marginBottom: 12 },
   calStep: { fontSize: 9, color: COLORS.primary, letterSpacing: 3, fontWeight: '800', marginBottom: 6 },
   calInstr: { fontSize: 14, color: COLORS.textSecondary, lineHeight: 20 },
-  calBtn: { backgroundColor: 'rgba(201,168,76,0.12)', borderRadius: RADIUS.button, paddingVertical: 16, alignItems: 'center', borderWidth: 1, borderColor: 'rgba(201,168,76,0.3)', marginTop: 4 },
+  calBtn: { backgroundColor: COLORS.primaryGlow, borderRadius: RADIUS.button, paddingVertical: 16, alignItems: 'center', borderWidth: 1, borderColor: COLORS.primaryMuted, marginTop: 4 },
   calBtnText: { fontSize: 14, color: COLORS.primary, fontWeight: '800' },
   // ─── Sets ───────────────────────────────────────────────────────
   setsLabel: { fontSize: 9, color: COLORS.textSecondary, letterSpacing: 3, fontWeight: '700', marginBottom: 10 },
@@ -577,12 +580,12 @@ const s = StyleSheet.create({
   bodyweightSets: { fontSize: 12, color: COLORS.textSecondary, marginTop: 2 },
   setsRowInner: { flexDirection: 'row', gap: 8, flexWrap: 'wrap' },
   setsRow: { paddingLeft: 32 },
-  setBtn: { height: 48, minWidth: 66, paddingHorizontal: 12, borderRadius: RADIUS.button, backgroundColor: COLORS.surfaceElevated, borderWidth: 1, borderColor: COLORS.border, justifyContent: 'center', alignItems: 'center' },
+  setBtn: { height: 48, minWidth: 66, paddingHorizontal: 12, borderRadius: RADIUS.button, backgroundColor: COLORS.surfaceElevated, borderWidth: 1, borderColor: COLORS.borderLight, justifyContent: 'center', alignItems: 'center' },
   setBtnDone: { backgroundColor: COLORS.primary, borderWidth: 0 },
-  setBtnNext: { borderColor: 'rgba(201,168,76,0.5)' },
+  setBtnNext: { borderColor: COLORS.primaryMuted },
   setBtnText: { fontSize: 12, color: COLORS.textSecondary, fontWeight: '700' },
   setBtnTextDone: { color: '#000', fontWeight: '800' },
   // ─── Finish Button ──────────────────────────────────────────────
-  finishBtn: { backgroundColor: COLORS.primary, borderRadius: RADIUS.button, paddingVertical: 18, alignItems: 'center', marginTop: 8, shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.4, shadowRadius: 14 },
+  finishBtn: { backgroundColor: COLORS.primary, borderRadius: RADIUS.button, paddingVertical: 18, alignItems: 'center', marginTop: 8, shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 6 }, shadowOpacity: 0.45, shadowRadius: 14 },
   finishBtnText: { color: '#000', fontSize: 16, fontWeight: '800' },
 });
