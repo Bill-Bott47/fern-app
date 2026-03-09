@@ -5,9 +5,15 @@ import {
 } from 'react-native';
 import { getWorkouts, WorkoutSession } from '../services/fernApi';
 
-const G = '#3DDC84';
-const BG = '#080A0F';
-const CARD = '#111';
+// ─── Design Tokens ──────────────────────────────────────────────
+const GOLD   = '#C9A84C';
+const BG     = '#0A0A0A';
+const SURFACE = '#141414';
+const SURFACE_ELEVATED = '#1E1E1E';
+const TEXT   = '#FFFFFF';
+const TEXT2  = '#8A8A8A';
+const BORDER = '#2A2A2A';
+const ERROR  = '#EF4444';
 
 interface Props {
   onBack: () => void;
@@ -37,9 +43,9 @@ function daysAgo(dateStr: string): string {
 
 export default function WorkoutHistoryScreen({ onBack }: Props) {
   const [workouts, setWorkouts] = useState<WorkoutSession[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading]   = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError]       = useState<string | null>(null);
 
   const fetchData = useCallback(async (isRefresh = false) => {
     if (isRefresh) setRefreshing(true);
@@ -47,7 +53,6 @@ export default function WorkoutHistoryScreen({ onBack }: Props) {
     setError(null);
     try {
       const data = await getWorkouts();
-      // Sort descending by date
       const sorted = [...data].sort((a, b) =>
         new Date(b.date).getTime() - new Date(a.date).getTime()
       );
@@ -77,7 +82,7 @@ export default function WorkoutHistoryScreen({ onBack }: Props) {
 
       {loading ? (
         <View style={s.center}>
-          <ActivityIndicator size="large" color={G} />
+          <ActivityIndicator size="large" color={GOLD} />
           <Text style={s.loadingText}>Loading workouts…</Text>
         </View>
       ) : error ? (
@@ -95,7 +100,7 @@ export default function WorkoutHistoryScreen({ onBack }: Props) {
             <RefreshControl
               refreshing={refreshing}
               onRefresh={() => fetchData(true)}
-              tintColor={G}
+              tintColor={GOLD}
             />
           }
         >
@@ -107,7 +112,9 @@ export default function WorkoutHistoryScreen({ onBack }: Props) {
             </View>
           ) : (
             <>
-              <Text style={s.sectionLabel}>{workouts.length} SESSION{workouts.length !== 1 ? 'S' : ''}</Text>
+              <Text style={s.sectionLabel}>
+                {workouts.length} SESSION{workouts.length !== 1 ? 'S' : ''}
+              </Text>
               {workouts.map((w, i) => (
                 <View key={w.id ?? i} style={s.card}>
                   <View style={s.cardHeader}>
@@ -140,9 +147,7 @@ export default function WorkoutHistoryScreen({ onBack }: Props) {
                     )}
                   </View>
 
-                  {w.notes && (
-                    <Text style={s.notes}>{w.notes}</Text>
-                  )}
+                  {w.notes && <Text style={s.notes}>{w.notes}</Text>}
 
                   {w.sets_logged && w.sets_logged.length > 0 && (
                     <View style={s.setsList}>
@@ -158,7 +163,9 @@ export default function WorkoutHistoryScreen({ onBack }: Props) {
                         </View>
                       ))}
                       {w.sets_logged.length > 4 && (
-                        <Text style={s.moreText}>+{w.sets_logged.length - 4} more exercises</Text>
+                        <Text style={s.moreText}>
+                          +{w.sets_logged.length - 4} more exercises
+                        </Text>
                       )}
                     </View>
                   )}
@@ -177,53 +184,79 @@ const s = StyleSheet.create({
   container: { flex: 1, backgroundColor: BG },
   topBar: {
     flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
-    paddingHorizontal: 20, paddingTop: 16, paddingBottom: 12,
-    borderBottomWidth: 1, borderBottomColor: '#161616',
+    paddingHorizontal: 16, paddingTop: 16, paddingBottom: 12,
+    borderBottomWidth: 1, borderBottomColor: BORDER,
   },
   backBtn: { width: 60 },
-  backText: { fontSize: 15, color: G, fontWeight: '600' },
-  title: { fontSize: 11, letterSpacing: 4, color: '#444', fontWeight: '700' },
-  scroll: { padding: 20 },
-  center: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 40 },
-  loadingText: { color: '#444', fontSize: 13, marginTop: 12 },
-  errorIcon: { fontSize: 32, marginBottom: 12 },
-  errorText: { color: '#FF6B6B', fontSize: 14, textAlign: 'center', marginBottom: 20 },
-  retryBtn: {
-    backgroundColor: '#1A1A1A', borderRadius: 12, paddingHorizontal: 24, paddingVertical: 12,
-    borderWidth: 1, borderColor: '#333',
+  backText: { fontSize: 15, color: GOLD, fontWeight: '600' },
+  title: {
+    fontSize: 11, letterSpacing: 4, color: TEXT2,
+    fontWeight: '700', fontFamily: 'Inter',
   },
-  retryText: { color: G, fontWeight: '700', fontSize: 14 },
+  scroll: { padding: 16 },
+  center: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 40 },
+  loadingText: { color: TEXT2, fontSize: 13, marginTop: 12 },
+  errorIcon: { fontSize: 32, marginBottom: 12 },
+  errorText: { color: ERROR, fontSize: 14, textAlign: 'center', marginBottom: 20 },
+  retryBtn: {
+    backgroundColor: SURFACE_ELEVATED, borderRadius: 8,
+    paddingHorizontal: 24, paddingVertical: 12,
+    borderWidth: 1, borderColor: BORDER,
+  },
+  retryText: { color: GOLD, fontWeight: '700', fontSize: 14 },
+
   emptyState: { alignItems: 'center', paddingVertical: 60 },
   emptyEmoji: { fontSize: 48, marginBottom: 16 },
-  emptyTitle: { fontSize: 20, color: '#fff', fontWeight: '600', marginBottom: 8 },
-  emptySub: { fontSize: 14, color: '#444', textAlign: 'center' },
+  emptyTitle: { fontSize: 20, color: TEXT, fontWeight: '700', marginBottom: 8 },
+  emptySub: { fontSize: 14, color: TEXT2, textAlign: 'center', lineHeight: 22 },
+
   sectionLabel: {
-    fontSize: 10, letterSpacing: 4, color: '#2A2A2A',
+    fontSize: 10, letterSpacing: 4, color: TEXT2,
     fontWeight: '700', marginBottom: 16,
   },
+
+  // ─── Card ──────────────────────────────────────────────────────
   card: {
-    backgroundColor: CARD, borderRadius: 18, borderWidth: 1,
-    borderColor: '#1A1A1A', padding: 18, marginBottom: 12,
+    backgroundColor: SURFACE, borderRadius: 12, borderWidth: 1,
+    borderColor: BORDER, padding: 16, marginBottom: 10,
   },
-  cardHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10 },
+  cardHeader: {
+    flexDirection: 'row', justifyContent: 'space-between',
+    alignItems: 'flex-start', marginBottom: 10,
+  },
   cardMeta: { gap: 2 },
-  cardAgo: { fontSize: 11, color: G, fontWeight: '700', letterSpacing: 1 },
-  cardDate: { fontSize: 12, color: '#444' },
+  cardAgo: { fontSize: 11, color: GOLD, fontWeight: '700', letterSpacing: 1 },
+  cardDate: { fontSize: 12, color: TEXT2 },
   durationPill: {
-    backgroundColor: 'rgba(61,220,132,0.1)', borderRadius: 20, borderWidth: 1,
-    borderColor: 'rgba(61,220,132,0.2)', paddingHorizontal: 10, paddingVertical: 4,
+    backgroundColor: `${GOLD}18`, borderRadius: 20, borderWidth: 1,
+    borderColor: `${GOLD}40`, paddingHorizontal: 10, paddingVertical: 4,
   },
-  durationText: { fontSize: 11, color: G, fontWeight: '700' },
-  cardName: { fontSize: 20, color: '#fff', fontWeight: '800', letterSpacing: -0.5, marginBottom: 4 },
-  cardFocus: { fontSize: 12, color: '#444', marginBottom: 14 },
-  stats: { flexDirection: 'row', gap: 20, marginBottom: 14 },
+  durationText: { fontSize: 11, color: GOLD, fontWeight: '700' },
+
+  cardName: {
+    fontSize: 20, color: TEXT, fontWeight: '800',
+    letterSpacing: -0.5, marginBottom: 4,
+  },
+  cardFocus: { fontSize: 12, color: TEXT2, marginBottom: 14 },
+
+  stats: { flexDirection: 'row', gap: 24, marginBottom: 14 },
   stat: { alignItems: 'center' },
-  statVal: { fontSize: 22, color: '#fff', fontWeight: '800' },
-  statLabel: { fontSize: 9, color: '#2A2A2A', letterSpacing: 2, fontWeight: '700', marginTop: 2 },
-  notes: { fontSize: 12, color: '#555', fontStyle: 'italic', marginBottom: 12 },
-  setsList: { borderTopWidth: 1, borderTopColor: '#1A1A1A', paddingTop: 12, gap: 8 },
-  setRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
-  setName: { fontSize: 13, color: '#888', flex: 1 },
-  setSpec: { fontSize: 12, color: '#444' },
-  moreText: { fontSize: 11, color: '#2A2A2A', fontStyle: 'italic', marginTop: 4 },
+  statVal: { fontSize: 22, color: TEXT, fontWeight: '800' },
+  statLabel: {
+    fontSize: 9, color: TEXT2, letterSpacing: 2,
+    fontWeight: '700', marginTop: 2,
+  },
+  notes: {
+    fontSize: 12, color: TEXT2, fontStyle: 'italic', marginBottom: 12,
+  },
+
+  setsList: {
+    borderTopWidth: 1, borderTopColor: BORDER, paddingTop: 12, gap: 8,
+  },
+  setRow: {
+    flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center',
+  },
+  setName: { fontSize: 13, color: TEXT2, flex: 1 },
+  setSpec: { fontSize: 12, color: '#666' },
+  moreText: { fontSize: 11, color: '#555', fontStyle: 'italic', marginTop: 4 },
 });

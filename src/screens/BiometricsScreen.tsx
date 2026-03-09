@@ -6,8 +6,9 @@ import {
 import { getBiometrics, getCompliance, BiometricData, ComplianceData } from '../services/fernApi';
 
 const G = '#3DDC84';
-const BG = '#080A0F';
-const CARD = '#111';
+const BG = '#080C12';
+const CARD = '#0F1520';
+const BORDER = '#1C2535';
 
 interface Props {
   onBack: () => void;
@@ -30,12 +31,12 @@ function ComplianceRing({ score }: { score: number }) {
 const ring = StyleSheet.create({
   wrap: { alignItems: 'center', marginVertical: 8 },
   circle: {
-    width: 140, height: 140, borderRadius: 70,
-    borderWidth: 5, alignItems: 'center', justifyContent: 'center',
-    backgroundColor: '#0A0A0A',
+    width: 148, height: 148, borderRadius: 74,
+    borderWidth: 6, alignItems: 'center', justifyContent: 'center',
+    backgroundColor: '#080C12',
   },
-  score: { fontSize: 48, fontWeight: '900', letterSpacing: -2, lineHeight: 52 },
-  label: { fontSize: 9, color: '#333', letterSpacing: 3, fontWeight: '700', marginTop: 2 },
+  score: { fontSize: 52, fontWeight: '900', letterSpacing: -2, lineHeight: 56 },
+  label: { fontSize: 9, color: '#4D6478', letterSpacing: 3, fontWeight: '700', marginTop: 2 },
 });
 
 interface MetricCardProps {
@@ -65,16 +66,16 @@ function MetricCard({ label, value, unit, icon, sub, color = '#fff' }: MetricCar
 
 const mc = StyleSheet.create({
   card: {
-    backgroundColor: CARD, borderRadius: 16, borderWidth: 1,
-    borderColor: '#1A1A1A', padding: 16, flex: 1,
-    minHeight: 100,
+    backgroundColor: CARD, borderRadius: 18, borderWidth: 1,
+    borderColor: '#1C2535', padding: 18, flex: 1,
+    minHeight: 110,
   },
-  icon: { fontSize: 20, marginBottom: 6 },
-  label: { fontSize: 10, color: '#444', letterSpacing: 2, fontWeight: '700', marginBottom: 8 },
+  icon: { fontSize: 22, marginBottom: 8 },
+  label: { fontSize: 10, color: '#4D6478', letterSpacing: 2, fontWeight: '700', marginBottom: 8 },
   valueRow: { flexDirection: 'row', alignItems: 'flex-end', gap: 4 },
-  value: { fontSize: 28, fontWeight: '900', letterSpacing: -1 },
-  unit: { fontSize: 12, color: '#444', paddingBottom: 4 },
-  sub: { fontSize: 11, color: '#333', marginTop: 4 },
+  value: { fontSize: 30, fontWeight: '900', letterSpacing: -1 },
+  unit: { fontSize: 13, color: '#5B7080', paddingBottom: 4 },
+  sub: { fontSize: 11, color: '#4D6478', marginTop: 6, fontWeight: '600' },
 });
 
 export default function BiometricsScreen({ onBack }: Props) {
@@ -292,39 +293,39 @@ const s = StyleSheet.create({
   },
   backBtn: { width: 60 },
   backText: { fontSize: 15, color: G, fontWeight: '600' },
-  title: { fontSize: 11, letterSpacing: 4, color: '#444', fontWeight: '700' },
+  title: { fontSize: 11, letterSpacing: 4, color: '#5B7080', fontWeight: '700' },
   scroll: { padding: 20 },
   center: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 40 },
-  loadingText: { color: '#444', fontSize: 13, marginTop: 12 },
+  loadingText: { color: '#5B7080', fontSize: 13, marginTop: 12 },
   errorIcon: { fontSize: 32, marginBottom: 12 },
   errorText: { color: '#FF6B6B', fontSize: 14, textAlign: 'center', marginBottom: 20 },
   retryBtn: {
-    backgroundColor: '#1A1A1A', borderRadius: 12, paddingHorizontal: 24, paddingVertical: 12,
-    borderWidth: 1, borderColor: '#333',
+    backgroundColor: '#141D2B', borderRadius: 12, paddingHorizontal: 24, paddingVertical: 12,
+    borderWidth: 1, borderColor: '#1C2535',
   },
   retryText: { color: G, fontWeight: '700', fontSize: 14 },
   section: { marginBottom: 24 },
   sectionLabel: {
-    fontSize: 10, letterSpacing: 4, color: '#2A2A2A',
+    fontSize: 10, letterSpacing: 4, color: '#4A6078',
     fontWeight: '700', marginBottom: 14,
   },
-  bioDate: { fontSize: 11, color: '#333', marginBottom: 12 },
+  bioDate: { fontSize: 11, color: '#4D6478', marginBottom: 12 },
   compCard: {
     backgroundColor: CARD, borderRadius: 20, borderWidth: 1,
-    borderColor: '#1A1A1A', padding: 24, alignItems: 'center',
+    borderColor: '#1C2535', padding: 24, alignItems: 'center',
   },
   compStats: { flexDirection: 'row', gap: 40, marginTop: 20 },
   compStat: { alignItems: 'center' },
   compStatVal: { fontSize: 24, color: '#fff', fontWeight: '800' },
-  compStatLabel: { fontSize: 9, color: '#2A2A2A', letterSpacing: 2, fontWeight: '700', marginTop: 2 },
+  compStatLabel: { fontSize: 9, color: '#4A6078', letterSpacing: 2, fontWeight: '700', marginTop: 2 },
   compMessage: {
-    marginTop: 18, borderTopWidth: 1, borderTopColor: '#1A1A1A',
+    marginTop: 18, borderTopWidth: 1, borderTopColor: '#1C2535',
     paddingTop: 16, width: '100%',
   },
-  compMessageText: { fontSize: 13, color: '#555', fontStyle: 'italic', textAlign: 'center', lineHeight: 20 },
+  compMessageText: { fontSize: 13, color: '#6B8090', fontStyle: 'italic', textAlign: 'center', lineHeight: 20 },
   row: { flexDirection: 'row', gap: 12, marginBottom: 12 },
   emptyState: { alignItems: 'center', paddingVertical: 60 },
   emptyEmoji: { fontSize: 48, marginBottom: 16 },
   emptyTitle: { fontSize: 20, color: '#fff', fontWeight: '600', marginBottom: 8 },
-  emptySub: { fontSize: 14, color: '#444', textAlign: 'center' },
+  emptySub: { fontSize: 14, color: '#5B7080', textAlign: 'center' },
 });

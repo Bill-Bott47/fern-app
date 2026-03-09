@@ -337,7 +337,7 @@ export default function WorkoutScreen({ workout, onBack, vitruvian }: Props) {
           <Text style={styles.headerSub}>{Math.round(progress * 100)}% complete</Text>
         </View>
         <View style={styles.connectionDot}>
-          <View style={[styles.dot, { backgroundColor: vitruvian ? '#4CAF50' : '#F44336' }]} />
+          <View style={[styles.dot, { backgroundColor: vitruvian ? '#3DDC84' : '#F44336' }]} />
         </View>
       </View>
 
@@ -533,47 +533,47 @@ export default function WorkoutScreen({ workout, onBack, vitruvian }: Props) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#121212' },
+  container: { flex: 1, backgroundColor: '#080C12' },
   
   // Header
   header: { flexDirection: 'row', alignItems: 'center', padding: 16, paddingBottom: 8 },
   backBtn: { padding: 8 },
-  backText: { color: '#FF6B00', fontSize: 16, fontWeight: '600' },
+  backText: { color: '#3DDC84', fontSize: 16, fontWeight: '600' },
   headerCenter: { flex: 1, alignItems: 'center' },
-  headerTitle: { color: '#FFF', fontSize: 18, fontWeight: '700' },
-  headerSub: { color: '#888', fontSize: 12, marginTop: 2 },
+  headerTitle: { color: '#F0F4FF', fontSize: 18, fontWeight: '700' },
+  headerSub: { color: '#6B8090', fontSize: 12, marginTop: 2 },
   connectionDot: { padding: 8 },
   dot: { width: 10, height: 10, borderRadius: 5 },
   
   // Progress
-  progressBar: { height: 4, backgroundColor: '#333', marginHorizontal: 16 },
-  progressFill: { height: 4, backgroundColor: '#FF6B00', borderRadius: 2 },
+  progressBar: { height: 4, backgroundColor: '#141D2B', marginHorizontal: 16 },
+  progressFill: { height: 4, backgroundColor: '#3DDC84', borderRadius: 2 },
   
   // Rest timer
   restOverlay: { 
-    backgroundColor: '#1a3a1a', padding: 24, margin: 16, borderRadius: 16,
-    alignItems: 'center', borderWidth: 1, borderColor: '#4CAF50'
+    backgroundColor: '#0A1810', padding: 24, margin: 16, borderRadius: 16,
+    alignItems: 'center', borderWidth: 1, borderColor: '#3DDC84'
   },
-  restLabel: { color: '#4CAF50', fontSize: 16, fontWeight: '700', letterSpacing: 2 },
-  restTimer: { color: '#FFF', fontSize: 64, fontWeight: '800', marginVertical: 8 },
+  restLabel: { color: '#3DDC84', fontSize: 16, fontWeight: '700', letterSpacing: 2 },
+  restTimer: { color: '#F0F4FF', fontSize: 64, fontWeight: '800', marginVertical: 8 },
   skipBtn: { 
-    backgroundColor: '#333', paddingHorizontal: 24, paddingVertical: 10, 
+    backgroundColor: '#141D2B', paddingHorizontal: 24, paddingVertical: 10, 
     borderRadius: 20, marginTop: 8 
   },
-  skipText: { color: '#FFF', fontSize: 14, fontWeight: '600' },
+  skipText: { color: '#F0F4FF', fontSize: 14, fontWeight: '600' },
   
   // Live load
   loadBar: { 
-    backgroundColor: '#1a1a2e', padding: 16, marginHorizontal: 16, marginTop: 8,
-    borderRadius: 12, alignItems: 'center', borderWidth: 1, borderColor: '#FF6B00'
+    backgroundColor: '#0F1520', padding: 16, marginHorizontal: 16, marginTop: 8,
+    borderRadius: 12, alignItems: 'center', borderWidth: 1, borderColor: '#3DDC84'
   },
-  loadLabel: { color: '#FF6B00', fontSize: 12, fontWeight: '700', letterSpacing: 1 },
-  loadValue: { fontSize: 40, color: '#FF6B00', fontWeight: '800', marginVertical: 4 },
-  repCounter: { color: '#CCC', fontSize: 16, fontWeight: '600' },
+  loadLabel: { color: '#3DDC84', fontSize: 12, fontWeight: '700', letterSpacing: 1 },
+  loadValue: { fontSize: 40, color: '#3DDC84', fontWeight: '800', marginVertical: 4 },
+  repCounter: { color: '#C8D4E0', fontSize: 16, fontWeight: '600' },
   
   // Calibration
   calibrationBar: { 
-    backgroundColor: '#2a2a1a', padding: 12, marginHorizontal: 16, marginTop: 8,
+    backgroundColor: '#141D2B', padding: 12, marginHorizontal: 16, marginTop: 8,
     borderRadius: 12, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
     borderWidth: 1, borderColor: '#FFD700'
   },
@@ -583,70 +583,70 @@ const styles = StyleSheet.create({
   
   // Working
   workingBar: { 
-    backgroundColor: '#1a1a2e', padding: 12, marginHorizontal: 16, marginTop: 8,
-    borderRadius: 12, borderWidth: 1, borderColor: '#4CAF50'
+    backgroundColor: '#0F1520', padding: 12, marginHorizontal: 16, marginTop: 8,
+    borderRadius: 12, borderWidth: 1, borderColor: '#3DDC84'
   },
-  workingText: { color: '#FFF', fontSize: 14, fontWeight: '600', marginBottom: 8 },
+  workingText: { color: '#F0F4FF', fontSize: 14, fontWeight: '600', marginBottom: 8 },
   inputRow: { 
     flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
     marginBottom: 8, gap: 8 
   },
-  inputLabel: { color: '#888', fontSize: 13, fontWeight: '600', width: 55 },
-  inputValue: { color: '#FFF', fontSize: 18, fontWeight: '700', minWidth: 70, textAlign: 'center' },
+  inputLabel: { color: '#6B8090', fontSize: 13, fontWeight: '600', width: 55 },
+  inputValue: { color: '#F0F4FF', fontSize: 18, fontWeight: '700', minWidth: 70, textAlign: 'center' },
   adjBtn: { 
-    backgroundColor: '#333', width: 44, height: 36, borderRadius: 8,
+    backgroundColor: '#141D2B', width: 44, height: 36, borderRadius: 8,
     alignItems: 'center', justifyContent: 'center'
   },
-  adjText: { color: '#FF6B00', fontSize: 16, fontWeight: '700' },
+  adjText: { color: '#3DDC84', fontSize: 16, fontWeight: '700' },
   bandRow: { 
     flexDirection: 'row', alignItems: 'center', marginBottom: 8 
   },
   bandScroll: { flexDirection: 'row' },
   bandChip: { 
-    backgroundColor: '#333', paddingHorizontal: 12, paddingVertical: 6, 
+    backgroundColor: '#141D2B', paddingHorizontal: 12, paddingVertical: 6, 
     borderRadius: 16, marginRight: 6 
   },
-  bandChipActive: { backgroundColor: '#FF6B00' },
-  bandChipText: { color: '#888', fontSize: 12, fontWeight: '600' },
-  bandChipTextActive: { color: '#FFF' },
+  bandChipActive: { backgroundColor: '#3DDC84' },
+  bandChipText: { color: '#6B8090', fontSize: 12, fontWeight: '600' },
+  bandChipTextActive: { color: '#F0F4FF' },
   completeBtn: { 
-    backgroundColor: '#4CAF50', paddingHorizontal: 16, paddingVertical: 10, 
+    backgroundColor: '#3DDC84', paddingHorizontal: 16, paddingVertical: 10, 
     borderRadius: 8, alignItems: 'center', marginTop: 4 
   },
-  completeText: { color: '#FFF', fontWeight: '700', fontSize: 14 },
+  completeText: { color: '#F0F4FF', fontWeight: '700', fontSize: 14 },
   
   // Exercise list
   exerciseList: { flex: 1, padding: 16 },
   exerciseCard: { 
-    backgroundColor: '#1E1E1E', borderRadius: 12, padding: 16, marginBottom: 12,
-    borderWidth: 1, borderColor: '#333'
+    backgroundColor: '#0F1520', borderRadius: 12, padding: 16, marginBottom: 12,
+    borderWidth: 1, borderColor: '#1C2535'
   },
-  activeCard: { borderColor: '#FF6B00', backgroundColor: '#1a1a2e' },
-  completedCard: { opacity: 0.6, borderColor: '#4CAF50' },
+  activeCard: { borderColor: '#3DDC84', backgroundColor: '#0F1520' },
+  completedCard: { opacity: 0.6, borderColor: '#3DDC84' },
   exerciseHeader: { flexDirection: 'row', alignItems: 'center' },
   exerciseInfo: { flex: 1 },
-  exerciseName: { color: '#FFF', fontSize: 16, fontWeight: '700' },
-  completedText: { color: '#4CAF50' },
-  exerciseDetail: { color: '#888', fontSize: 13, marginTop: 4 },
-  coachingNote: { color: '#FF6B00', fontSize: 12, marginTop: 4, fontStyle: 'italic' },
+  exerciseName: { color: '#F0F4FF', fontSize: 16, fontWeight: '700' },
+  completedText: { color: '#3DDC84' },
+  exerciseDetail: { color: '#6B8090', fontSize: 13, marginTop: 4 },
+  coachingNote: { color: '#F59E0B', fontSize: 12, marginTop: 4, fontStyle: 'italic' },
   
   // Set dots
   setRow: { flexDirection: 'row', marginTop: 12, gap: 8 },
   setDot: { 
-    width: 32, height: 32, borderRadius: 16, backgroundColor: '#333',
+    width: 32, height: 32, borderRadius: 16, backgroundColor: '#141D2B',
     alignItems: 'center', justifyContent: 'center'
   },
-  setDotDone: { backgroundColor: '#4CAF50' },
-  setDotActive: { backgroundColor: '#FF6B00' },
-  setDotText: { color: '#FFF', fontSize: 13, fontWeight: '700' },
+  setDotDone: { backgroundColor: '#3DDC84' },
+  setDotActive: { backgroundColor: '#3DDC84' },
+  setDotText: { color: '#F0F4FF', fontSize: 13, fontWeight: '700' },
   
   // Workout complete
   completeOverlay: { alignItems: 'center', padding: 32 },
   completeEmoji: { fontSize: 64 },
-  completeTitle: { color: '#FFF', fontSize: 24, fontWeight: '800', marginTop: 16 },
+  completeTitle: { color: '#F0F4FF', fontSize: 24, fontWeight: '800', marginTop: 16 },
   finishBtn: { 
-    backgroundColor: '#FF6B00', paddingHorizontal: 32, paddingVertical: 14, 
+    backgroundColor: '#3DDC84', paddingHorizontal: 32, paddingVertical: 14, 
     borderRadius: 12, marginTop: 20 
   },
-  finishText: { color: '#FFF', fontSize: 16, fontWeight: '700' },
+  finishText: { color: '#F0F4FF', fontSize: 16, fontWeight: '700' },
 });

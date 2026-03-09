@@ -167,7 +167,7 @@ export default function ConnectScreen({ onConnected }: { onConnected: (device: D
 }
 
 const s = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#080A0F' },
+  container: { flex: 1, backgroundColor: '#080C12' },
   header: { paddingHorizontal: 22, paddingTop: 12, paddingBottom: 16 },
   wordmark: { fontSize: 11, letterSpacing: 6, color: G, fontWeight: '700', marginBottom: 6 },
   title: { fontSize: 26, color: '#fff', fontWeight: '800', letterSpacing: -0.5, marginBottom: 4 },
@@ -180,8 +180,8 @@ const s = StyleSheet.create({
   scanBtnActive: { opacity: 0.7 },
   scanBtnText: { color: '#000', fontWeight: '800', fontSize: 15 },
   list: { paddingHorizontal: 22, paddingBottom: 40 },
-  sectionLabel: { fontSize: 10, letterSpacing: 4, color: '#2A2A2A', fontWeight: '700', marginBottom: 12 },
-  empty: { color: '#2A2A2A', fontSize: 14, textAlign: 'center', marginTop: 40, lineHeight: 24 },
+  sectionLabel: { fontSize: 10, letterSpacing: 4, color: '#4A6078', fontWeight: '700', marginBottom: 12 },
+  empty: { color: '#4A6078', fontSize: 14, textAlign: 'center', marginTop: 40, lineHeight: 24 },
   deviceRow: {
     flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
     backgroundColor: '#111', borderRadius: 14, padding: 14, marginBottom: 8,
@@ -191,7 +191,7 @@ const s = StyleSheet.create({
   deviceRowConn: { borderColor: G },
   deviceLeft: { flex: 1 },
   deviceName: { fontSize: 15, color: '#DDD', fontWeight: '600', marginBottom: 2 },
-  deviceSub: { fontSize: 10, color: '#333', fontFamily: 'monospace' },
+  deviceSub: { fontSize: 10, color: '#4D6478', fontFamily: 'monospace' },
   deviceRight: { alignItems: 'flex-end', marginLeft: 8 },
   vitPill: { backgroundColor: 'rgba(61,220,132,0.1)', borderWidth: 1, borderColor: 'rgba(61,220,132,0.3)', borderRadius: 20, paddingHorizontal: 8, paddingVertical: 3 },
   vitPillText: { fontSize: 9, color: G, fontWeight: '700', letterSpacing: 1 },
@@ -200,6 +200,6 @@ const s = StyleSheet.create({
   svcCard: { backgroundColor: '#111', borderRadius: 12, padding: 12, marginBottom: 8, borderWidth: 1, borderColor: '#1A1A1A' },
   svcUuid: { fontSize: 10, color: G, fontWeight: '700', marginBottom: 6, fontFamily: 'monospace' },
   charRow: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 2 },
-  charUuid: { fontSize: 9, color: '#333', flex: 1, fontFamily: 'monospace' },
+  charUuid: { fontSize: 9, color: '#4D6478', flex: 1, fontFamily: 'monospace' },
   charFlags: { fontSize: 9, color: '#3DDC84', fontWeight: '700', width: 36, textAlign: 'right' },
 });

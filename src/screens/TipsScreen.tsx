@@ -6,8 +6,8 @@ import {
 import { getTips, Tip } from '../services/fernApi';
 
 const G = '#3DDC84';
-const BG = '#080A0F';
-const CARD = '#111';
+const BG = '#080C12';
+const CARD = '#0F1520';
 
 interface Props {
   onBack: () => void;
@@ -218,7 +218,7 @@ const s = StyleSheet.create({
   statsRow: { flexDirection: 'row', gap: 32, marginBottom: 20 },
   stat: { alignItems: 'center' },
   statVal: { fontSize: 22, color: '#fff', fontWeight: '800' },
-  statLabel: { fontSize: 9, color: '#2A2A2A', letterSpacing: 2, fontWeight: '700', marginTop: 2 },
+  statLabel: { fontSize: 9, color: '#4A6078', letterSpacing: 2, fontWeight: '700', marginTop: 2 },
   card: {
     backgroundColor: CARD, borderRadius: 18, borderWidth: 1,
     borderColor: '#1A1A1A', padding: 18, marginBottom: 10,
@@ -250,7 +250,7 @@ const s = StyleSheet.create({
   },
   tipMessageUnread: { color: '#CCC' },
   aceTag: { marginTop: 12, alignItems: 'flex-end' },
-  aceTagText: { fontSize: 11, color: '#2A2A2A', fontStyle: 'italic', letterSpacing: 1 },
+  aceTagText: { fontSize: 11, color: '#4A6478', fontStyle: 'italic', letterSpacing: 1 },
   emptyState: { alignItems: 'center', paddingVertical: 60 },
   emptyEmoji: { fontSize: 48, marginBottom: 16 },
   emptyTitle: { fontSize: 20, color: '#fff', fontWeight: '600', marginBottom: 8 },
