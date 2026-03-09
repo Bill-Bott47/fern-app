@@ -16,17 +16,27 @@ import TipsScreen from './src/screens/TipsScreen';
 // Design System - Luxury Fitness Theme
 const COLORS = {
   primary: '#C9A84C',       // Gold
+  primaryMuted: '#9A7B2F', // Muted gold
   background: '#0A0A0A',    // Deep black
   surface: '#141414',       // Card background
   surfaceElevated: '#1E1E1E', // Elevated surfaces
   textPrimary: '#FFFFFF',
   textSecondary: '#8A8A8A',
+  textTertiary: '#5A5A5A',
   border: '#2A2A2A',
   success: '#22C55E',
   warning: '#FBBF24',
   error: '#EF4444',
 };
-const RADIUS = { card: 12, button: 8 };
+const RADIUS = { card: 16, button: 10 };
+const SPACING = {
+  xs: 4,
+  sm: 8,
+  md: 12,
+  lg: 16,
+  xl: 22,
+  xxl: 32,
+};
 
 type Screen = 'home' | 'workout' | 'connect' | 'history' | 'biometrics' | 'tips';
 
@@ -437,61 +447,61 @@ function WorkoutScreen({ workout, onBack, vitruvian }: { workout: Workout; onBac
 const s = StyleSheet.create({
   // ─── Layout ─────────────────────────────────────────────────────
   container: { flex: 1, backgroundColor: COLORS.background },
-  scroll: { padding: 16, paddingBottom: 100 },
+  scroll: { padding: SPACING.lg, paddingBottom: 100 },
   // ─── Header ─────────────────────────────────────────────────────
-  wordmark: { fontSize: 11, letterSpacing: 6, color: COLORS.primary, fontWeight: '700', marginBottom: 6 },
-  date: { fontSize: 22, color: COLORS.textPrimary, fontWeight: '300', marginBottom: 22 },
+  wordmark: { fontSize: 11, letterSpacing: 8, color: COLORS.primary, fontWeight: '700', marginBottom: SPACING.xs },
+  date: { fontSize: 24, color: COLORS.textPrimary, fontWeight: '200', marginBottom: SPACING.xl },
   // ─── Week Strip ─────────────────────────────────────────────────
-  weekStrip: { flexDirection: 'row', justifyContent: 'space-between', backgroundColor: COLORS.surface, borderRadius: RADIUS.card, padding: 16, marginBottom: 22, borderWidth: 1, borderColor: COLORS.border },
-  dayCol: { alignItems: 'center', gap: 5 },
+  weekStrip: { flexDirection: 'row', justifyContent: 'space-between', backgroundColor: COLORS.surface, borderRadius: RADIUS.card, padding: SPACING.lg, marginBottom: SPACING.xl, borderWidth: 1, borderColor: COLORS.border },
+  dayCol: { alignItems: 'center', gap: SPACING.sm },
   dayColActive: {},
   pip: { width: 5, height: 5, borderRadius: 2.5, backgroundColor: COLORS.border },
-  pipActive: { backgroundColor: COLORS.primary, width: 14, borderRadius: 3 },
-  dayLetter: { fontSize: 11, color: COLORS.textSecondary, fontWeight: '700' },
+  pipActive: { backgroundColor: COLORS.primary, width: 16, height: 6, borderRadius: 3 },
+  dayLetter: { fontSize: 11, color: COLORS.textSecondary, fontWeight: '600' },
   dayLetterActive: { color: COLORS.primary },
   // ─── Today Card ─────────────────────────────────────────────────
-  todayCard: { backgroundColor: COLORS.surface, borderRadius: RADIUS.card, borderWidth: 1, borderColor: COLORS.border, padding: 22, marginBottom: 24 },
-  todayPill: { alignSelf: 'flex-start', backgroundColor: 'rgba(201,168,76,0.1)', borderWidth: 1, borderColor: 'rgba(201,168,76,0.25)', borderRadius: 20, paddingHorizontal: 12, paddingVertical: 5, marginBottom: 12 },
+  todayCard: { backgroundColor: COLORS.surface, borderRadius: RADIUS.card, borderWidth: 1, borderColor: COLORS.border, padding: SPACING.xl, marginBottom: SPACING.xl },
+  todayPill: { alignSelf: 'flex-start', backgroundColor: 'rgba(201,168,76,0.1)', borderWidth: 1, borderColor: 'rgba(201,168,76,0.25)', borderRadius: 20, paddingHorizontal: SPACING.md, paddingVertical: SPACING.xs, marginBottom: SPACING.md },
   todayPillText: { fontSize: 10, color: COLORS.primary, fontWeight: '700', letterSpacing: 2 },
-  todayName: { fontSize: 32, color: COLORS.textPrimary, fontWeight: '900', letterSpacing: -1, marginBottom: 4 },
-  todayFocus: { fontSize: 13, color: COLORS.textSecondary, marginBottom: 16 },
-  chips: { flexDirection: 'row', gap: 8, marginBottom: 20, flexWrap: 'wrap' },
-  chip: { backgroundColor: COLORS.surfaceElevated, borderWidth: 1, borderColor: COLORS.border, borderRadius: 20, paddingHorizontal: 12, paddingVertical: 5 },
+  todayName: { fontSize: 34, color: COLORS.textPrimary, fontWeight: '900', letterSpacing: -1.5, marginBottom: SPACING.xs },
+  todayFocus: { fontSize: 14, color: COLORS.textSecondary, marginBottom: SPACING.lg },
+  chips: { flexDirection: 'row', gap: SPACING.sm, marginBottom: SPACING.xl, flexWrap: 'wrap' },
+  chip: { backgroundColor: COLORS.surfaceElevated, borderWidth: 1, borderColor: COLORS.border, borderRadius: 20, paddingHorizontal: SPACING.md, paddingVertical: SPACING.sm },
   chipText: { fontSize: 11, color: COLORS.textSecondary, fontWeight: '600' },
-  startBtn: { backgroundColor: COLORS.primary, borderRadius: RADIUS.button, paddingVertical: 17, alignItems: 'center', shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.4, shadowRadius: 16, marginBottom: 10 },
-  startBtnText: { color: '#000', fontWeight: '800', fontSize: 15, letterSpacing: 0.5 },
-  connectBtn: { backgroundColor: COLORS.surfaceElevated, borderRadius: RADIUS.button, paddingVertical: 13, alignItems: 'center', borderWidth: 1, borderColor: COLORS.border },
+  startBtn: { backgroundColor: COLORS.primary, borderRadius: RADIUS.button, paddingVertical: 18, alignItems: 'center', shadowColor: COLORS.primary, shadowOffset: { width: 0, height: 8 }, shadowOpacity: 0.4, shadowRadius: 16, marginBottom: SPACING.md, elevation: 8 },
+  startBtnText: { color: '#000', fontWeight: '800', fontSize: 16, letterSpacing: 0.5 },
+  connectBtn: { backgroundColor: COLORS.surfaceElevated, borderRadius: RADIUS.button, paddingVertical: SPACING.md, alignItems: 'center', borderWidth: 1, borderColor: COLORS.border },
   connectBtnText: { color: COLORS.textSecondary, fontWeight: '600', fontSize: 13 },
   // ─── Rest Card ──────────────────────────────────────────────────
-  restCard: { backgroundColor: COLORS.surface, borderRadius: RADIUS.card, padding: 40, alignItems: 'center', marginBottom: 24, borderWidth: 1, borderColor: COLORS.border },
-  restEmoji: { fontSize: 40, marginBottom: 12 },
-  restTitle: { fontSize: 22, color: COLORS.textPrimary, fontWeight: '600', marginBottom: 8 },
+  restCard: { backgroundColor: COLORS.surface, borderRadius: RADIUS.card, padding: SPACING.xxl, alignItems: 'center', marginBottom: SPACING.xl, borderWidth: 1, borderColor: COLORS.border },
+  restEmoji: { fontSize: 48, marginBottom: SPACING.md },
+  restTitle: { fontSize: 24, color: COLORS.textPrimary, fontWeight: '600', marginBottom: SPACING.sm },
   restSub: { fontSize: 14, color: COLORS.textSecondary, textAlign: 'center' },
   // ─── Section Labels ─────────────────────────────────────────────
-  secLabel: { fontSize: 10, letterSpacing: 4, color: COLORS.textSecondary, fontWeight: '700', marginBottom: 14 },
+  secLabel: { fontSize: 10, letterSpacing: 5, color: COLORS.textTertiary, fontWeight: '700', marginBottom: SPACING.md, marginTop: SPACING.md },
   // ─── Weekly Schedule ────────────────────────────────────────────
-  schedRow: { flexDirection: 'row', alignItems: 'center', gap: 14, paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: COLORS.border },
+  schedRow: { flexDirection: 'row', alignItems: 'center', gap: SPACING.md, paddingVertical: SPACING.md, borderBottomWidth: 1, borderBottomColor: COLORS.border },
   schedRowActive: {},
-  schedBadge: { width: 44, height: 44, borderRadius: RADIUS.button, backgroundColor: COLORS.surfaceElevated, borderWidth: 1, borderColor: COLORS.border, justifyContent: 'center', alignItems: 'center' },
+  schedBadge: { width: 48, height: 48, borderRadius: RADIUS.button, backgroundColor: COLORS.surfaceElevated, borderWidth: 1, borderColor: COLORS.border, justifyContent: 'center', alignItems: 'center' },
   schedBadgeActive: { backgroundColor: 'rgba(201,168,76,0.1)', borderColor: 'rgba(201,168,76,0.3)' },
   schedBadgeText: { fontSize: 10, color: COLORS.textSecondary, fontWeight: '800' },
   schedBadgeTextActive: { color: COLORS.primary },
   schedInfo: { flex: 1 },
-  schedName: { fontSize: 14, color: COLORS.textPrimary, fontWeight: '600', marginBottom: 2 },
+  schedName: { fontSize: 15, color: COLORS.textPrimary, fontWeight: '600', marginBottom: 2 },
   schedNameActive: { color: COLORS.textPrimary },
-  schedFocus: { fontSize: 11, color: COLORS.textSecondary },
-  schedArrow: { fontSize: 18, color: COLORS.textSecondary },
+  schedFocus: { fontSize: 12, color: COLORS.textSecondary },
+  schedArrow: { fontSize: 20, color: COLORS.textTertiary },
   // ─── ACE Intelligence Nav ───────────────────────────────────────
-  aceNav: { flexDirection: 'row', gap: 10, marginBottom: 12 },
-  aceNavBtn: { flex: 1, backgroundColor: COLORS.surface, borderRadius: RADIUS.card, borderWidth: 1, borderColor: COLORS.border, padding: 14, alignItems: 'center', gap: 4 },
-  aceNavIcon: { fontSize: 22 },
+  aceNav: { flexDirection: 'row', gap: SPACING.md, marginBottom: SPACING.md },
+  aceNavBtn: { flex: 1, backgroundColor: COLORS.surface, borderRadius: RADIUS.card, borderWidth: 1, borderColor: COLORS.border, padding: SPACING.lg, alignItems: 'center', gap: SPACING.xs },
+  aceNavIcon: { fontSize: 24 },
   aceNavLabel: { fontSize: 12, color: COLORS.textPrimary, fontWeight: '700', textAlign: 'center' },
   aceNavSub: { fontSize: 9, color: COLORS.textSecondary, textAlign: 'center', lineHeight: 14 },
   // ─── Bottom Nav Bar ─────────────────────────────────────────────
-  bottomNav: { flexDirection: 'row', backgroundColor: COLORS.surface, borderTopWidth: 1, borderTopColor: COLORS.border, paddingBottom: 10, paddingTop: 6 },
-  navTab: { flex: 1, alignItems: 'center', gap: 3, paddingVertical: 6 },
+  bottomNav: { flexDirection: 'row', backgroundColor: COLORS.surface, borderTopWidth: 1, borderTopColor: COLORS.border, paddingBottom: 12, paddingTop: SPACING.sm },
+  navTab: { flex: 1, alignItems: 'center', gap: SPACING.xs, paddingVertical: SPACING.sm },
   navTabActive: {},
-  navTabIcon: { fontSize: 20 },
+  navTabIcon: { fontSize: 22 },
   navTabLabel: { fontSize: 10, color: COLORS.textSecondary, fontWeight: '600' },
   navTabLabelActive: { color: COLORS.primary, fontWeight: '700' },
   // ─── Workout Screen Header ──────────────────────────────────────
