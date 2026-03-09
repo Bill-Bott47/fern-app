@@ -1,0 +1,87 @@
+Starting project at /Users/bill/.openclaw/workspace/fern-app
+Starting Metro Bundler
+The following packages should be updated for best compatibility with the installed expo version:
+  expo-router@55.0.3 - expected version: ~6.0.23
+  @types/react@19.2.14 - expected version: ~19.1.10
+Your project may not work correctly until you install the expected versions of the packages.
+Waiting on http://localhost:8081
+Logs for your project will appear below.
+Android ./index.ts ░░░░░░░░░░░░░░░░  0.0% (0/1)
+Android Bundled 402ms index.ts (637 modules)
+ WARN  SafeAreaView has been deprecated and will be removed in a future release. Please use 'react-native-safe-area-context' instead. See https://github.com/th3rdwave/react-native-safe-area-context
+ WARN  The app is running using the Legacy Architecture. The Legacy Architecture is deprecated and will be removed in a future version of React Native. Please consider migrating to the New Architecture. For more information, please see https://reactnative.dev/blog/2024/10/23/the-new-architecture-is-here
+ INFO  Launching DevTools...
+ ERROR  [TypeError: Cannot read property 'createClient' of null]
+ ERROR  [TypeError: Cannot read property 'createClient' of null]
+Android ./index.ts ░░░░░░░░░░░░░░░░  0.0% (0/1)
+Android Bundled 56ms index.ts (1 module)
+ WARN  SafeAreaView has been deprecated and will be removed in a future release. Please use 'react-native-safe-area-context' instead. See https://github.com/th3rdwave/react-native-safe-area-context
+ WARN  The app is running using the Legacy Architecture. The Legacy Architecture is deprecated and will be removed in a future version of React Native. Please consider migrating to the New Architecture. For more information, please see https://reactnative.dev/blog/2024/10/23/the-new-architecture-is-here
+Android ./index.ts ░░░░░░░░░░░░░░░░  0.0% (0/1)
+Android Bundled 48ms index.ts (1 module)
+ WARN  SafeAreaView has been deprecated and will be removed in a future release. Please use 'react-native-safe-area-context' instead. See https://github.com/th3rdwave/react-native-safe-area-context
+ WARN  The app is running using the Legacy Architecture. The Legacy Architecture is deprecated and will be removed in a future version of React Native. Please consider migrating to the New Architecture. For more information, please see https://reactnative.dev/blog/2024/10/23/the-new-architecture-is-here
+Android ./index.ts ░░░░░░░░░░░░░░░░  0.0% (0/1)
+Android Bundled 69ms index.ts (1 module)
+ WARN  SafeAreaView has been deprecated and will be removed in a future release. Please use 'react-native-safe-area-context' instead. See https://github.com/th3rdwave/react-native-safe-area-context
+ WARN  The app is running using the Legacy Architecture. The Legacy Architecture is deprecated and will be removed in a future version of React Native. Please consider migrating to the New Architecture. For more information, please see https://reactnative.dev/blog/2024/10/23/the-new-architecture-is-here
+Android ./index.ts ░░░░░░░░░░░░░░░░  0.0% (0/1)
+Android Bundled 70ms index.ts (1 module)
+ WARN  SafeAreaView has been deprecated and will be removed in a future release. Please use 'react-native-safe-area-context' instead. See https://github.com/th3rdwave/react-native-safe-area-context
+ WARN  The app is running using the Legacy Architecture. The Legacy Architecture is deprecated and will be removed in a future version of React Native. Please consider migrating to the New Architecture. For more information, please see https://reactnative.dev/blog/2024/10/23/the-new-architecture-is-here
+ ERROR  React has detected a change in the order of Hooks called by %s. This will lead to bugs and errors if not fixed. For more information, read the Rules of Hooks: https://react.dev/link/rules-of-hooks
+
+   Previous render            Next render
+   ------------------------------------------------------
+%s   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ WorkoutScreen 1. useState                   useState
+2. undefined                  useState
+ ERROR  [Error: Rendered more hooks than during the previous render.]
+Android ./index.ts ░░░░░░░░░░░░░░░░  0.0% (0/1)
+Android Bundled 238ms index.ts (1 module)
+ WARN  SafeAreaView has been deprecated and will be removed in a future release. Please use 'react-native-safe-area-context' instead. See https://github.com/th3rdwave/react-native-safe-area-context
+ WARN  The app is running using the Legacy Architecture. The Legacy Architecture is deprecated and will be removed in a future version of React Native. Please consider migrating to the New Architecture. For more information, please see https://reactnative.dev/blog/2024/10/23/the-new-architecture-is-here
+Android ./index.ts ░░░░░░░░░░░░░░░░  0.0% (0/1)
+Android Bundled 69ms index.ts (1 module)
+ WARN  SafeAreaView has been deprecated and will be removed in a future release. Please use 'react-native-safe-area-context' instead. See https://github.com/th3rdwave/react-native-safe-area-context
+ WARN  The app is running using the Legacy Architecture. The Legacy Architecture is deprecated and will be removed in a future version of React Native. Please consider migrating to the New Architecture. For more information, please see https://reactnative.dev/blog/2024/10/23/the-new-architecture-is-here
+Android ./index.ts ░░░░░░░░░░░░░░░░  0.0% (0/1)
+Android Bundled 146ms index.ts (1 module)
+ WARN  SafeAreaView has been deprecated and will be removed in a future release. Please use 'react-native-safe-area-context' instead. See https://github.com/th3rdwave/react-native-safe-area-context
+ WARN  The app is running using the Legacy Architecture. The Legacy Architecture is deprecated and will be removed in a future version of React Native. Please consider migrating to the New Architecture. For more information, please see https://reactnative.dev/blog/2024/10/23/the-new-architecture-is-here
+Android ./index.ts ░░░░░░░░░░░░░░░░  0.0% (0/1)
+Android Bundled 146ms index.ts (1 module)
+ WARN  SafeAreaView has been deprecated and will be removed in a future release. Please use 'react-native-safe-area-context' instead. See https://github.com/th3rdwave/react-native-safe-area-context
+ WARN  The app is running using the Legacy Architecture. The Legacy Architecture is deprecated and will be removed in a future version of React Native. Please consider migrating to the New Architecture. For more information, please see https://reactnative.dev/blog/2024/10/23/the-new-architecture-is-here
+ ERROR  React has detected a change in the order of Hooks called by %s. This will lead to bugs and errors if not fixed. For more information, read the Rules of Hooks: https://react.dev/link/rules-of-hooks
+
+   Previous render            Next render
+   ------------------------------------------------------
+%s   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ WorkoutScreen 1. useState                   useState
+2. useState                   useState
+3. useState                   useState
+4. useState                   useState
+5. useEffect                  useState
+ ERROR  [Error: Should have a queue. You are likely calling Hooks conditionally, which is not allowed. (https://react.dev/link/invalid-hook-call)]
+Android ./index.ts ░░░░░░░░░░░░░░░░  0.0% (0/1)
+Android Bundled 165ms index.ts (1 module)
+ WARN  SafeAreaView has been deprecated and will be removed in a future release. Please use 'react-native-safe-area-context' instead. See https://github.com/th3rdwave/react-native-safe-area-context
+ WARN  The app is running using the Legacy Architecture. The Legacy Architecture is deprecated and will be removed in a future version of React Native. Please consider migrating to the New Architecture. For more information, please see https://reactnative.dev/blog/2024/10/23/the-new-architecture-is-here
+ ERROR  React has detected a change in the order of Hooks called by %s. This will lead to bugs and errors if not fixed. For more information, read the Rules of Hooks: https://react.dev/link/rules-of-hooks
+
+   Previous render            Next render
+   ------------------------------------------------------
+%s   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ WorkoutScreen 1. useState                   useState
+2. useState                   useState
+3. useState                   useState
+4. useState                   useState
+5. useState                   useState
+6. useState                   useState
+7. useRef                     useState
+ ERROR  [Error: Should have a queue. You are likely calling Hooks conditionally, which is not allowed. (https://react.dev/link/invalid-hook-call)]
+Android ./index.ts ░░░░░░░░░░░░░░░░  0.0% (0/1)
+Android Bundled 200ms index.ts (1 module)
+ WARN  SafeAreaView has been deprecated and will be removed in a future release. Please use 'react-native-safe-area-context' instead. See https://github.com/th3rdwave/react-native-safe-area-context
+ WARN  The app is running using the Legacy Architecture. The Legacy Architecture is deprecated and will be removed in a future version of React Native. Please consider migrating to the New Architecture. For more information, please see https://reactnative.dev/blog/2024/10/23/the-new-architecture-is-here
