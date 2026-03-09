@@ -14,7 +14,7 @@ const COLORS = {
   textPrimary: '#FFFFFF',
   textSecondary: '#8A8A8A',
   border: '#2A2A2A',
-  success: '#4ADE80',
+  success: '#22C55E',
   warning: '#FBBF24',
   error: '#EF4444',
 };
@@ -48,7 +48,7 @@ function formatTime(dateStr?: string): string {
 function categoryColor(category?: string): string {
   const map: Record<string, string> = {
     nutrition: '#F59E0B',
-    recovery: '#60A5FA',
+    recovery: '#C9A84C',
     training: COLORS.primary,
     mindset: '#A78BFA',
     sleep: '#818CF8',

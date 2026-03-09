@@ -14,7 +14,7 @@ const COLORS = {
   textPrimary: '#FFFFFF',
   textSecondary: '#8A8A8A',
   border: '#2A2A2A',
-  success: '#4ADE80',
+  success: '#22C55E',
   warning: '#FBBF24',
   error: '#EF4444',
 };
@@ -93,8 +93,7 @@ export default function WorkoutHistoryScreen({ onBack }: Props) {
         </View>
       ) : error ? (
         <View style={styles.center}>
-          <Text style={styles.errorIcon}>⚠️ <Text style={styles.errorText}>{</Text>
-         error}</Text>
+          <Text style={styles.errorIcon}>⚠️ <Text style={styles.errorText}>{error}</Text></Text>
           <TouchableOpacity style={styles.retryBtn} onPress={() => fetchData()}>
             <Text style={styles.retryText}>Retry</Text>
           </TouchableOpacity>

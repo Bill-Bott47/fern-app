@@ -14,7 +14,7 @@ const COLORS = {
   textPrimary: '#FFFFFF',
   textSecondary: '#8A8A8A',
   border: '#2A2A2A',
-  success: '#4ADE80',
+  success: '#22C55E',
   warning: '#FBBF24',
   error: '#EF4444',
 };
